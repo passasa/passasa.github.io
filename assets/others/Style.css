@@ -39,3 +39,26 @@ iframe {
 .footer {
     margin-top: auto;
 }
+
+@media (max-width: 850px) {
+    iframe {
+        width: 100%; /* L'iframe occupe toute la largeur de l'écran */
+        height: auto; /* Ajuste la hauteur automatiquement */
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem; /* Taille de police réduite pour la marque */
+    }
+
+    .navbar-toggler {
+        font-size: 1rem; /* Taille de police réduite pour le bouton de navigation */
+    }
+
+    .container {
+        padding: 0 10px; /* Ajoute un peu de padding pour les petits écrans */
+    }
+
+    .footer {
+        font-size: 0.85rem; /* Taille de police réduite pour le texte du pied de page */
+    }
+}
