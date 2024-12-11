@@ -66,6 +66,34 @@
             justify-content: center;
         }
 
+        @media (max-width: 850px) {
+            .card-wrapper {
+                flex: 1 1 100%; /* Chaque carte occupe 100% de la largeur */
+                max-width: 100%;
+            }
+    
+            .card-title {
+                font-size: 1rem; /* Taille de police réduite pour les titres */
+            }
+    
+            .card-text {
+                font-size: 0.85rem; /* Taille de police réduite pour le texte */
+            }
+    
+            #cardsContainer {
+                flex-direction: column; /* Les cartes s'affichent en colonne */
+                gap: 0.5rem; /* Espace réduit entre les cartes */
+            }
+    
+            .navbar-brand {
+                font-size: 1.5rem; /* Taille de police réduite pour la marque */
+            }
+    
+            .navbar-toggler {
+                font-size: 1rem; /* Taille de police réduite pour le bouton de navigation */
+            }
+        }
+
     </style>
 </head>
 <body class="bg-dark text-light text-center">
