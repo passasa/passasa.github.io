@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque | Gentle Leak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
+
+    <style>
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 100%; /* Important pour la hauteur uniforme */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pour espacer le contenu */
+        }
+
+        .card-img-top {
+            border-bottom: 3px solid #ffc107;
+            object-fit: cover;
+            height: 356px; /* Hauteur fixe pour toutes les images */
+        }
+
+        .card-body {
+            background: linear-gradient(135deg, #343a40, #212529);
+            padding: 1.5rem;
+            border-top: 3px solid #ffc107;
+            flex-grow: 1; /* Remplit l'espace restant pour alignement */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            color: #ced4da;
+            margin-bottom: 1rem;
+            flex-grow: 1; /* S'étend pour garder une hauteur uniforme */
+        }
+
+        #cardsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem; /* Espace constant entre les cartes */
+            justify-content: center; /* Centrage des cartes */
+        }
+
+        .card-wrapper {
+            flex: 1 1 calc(25% - 1rem); /* Chaque carte occupe 25% de la largeur */
+            max-width: calc(23% - 1rem);
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+
+    </style>
+</head>
+<body class="bg-dark text-light text-center">
+
+    <!--Barre de navigation-->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand">Gentle Leak</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index.html">Accueil </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pages/bibliothèque.html">Bibliothèque</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+
+        <!-- Filtre -->
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <form id="filterForm" class="bg-secondary p-3 rounded">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="origin" class="form-label">Origine</label>
+                            <select class="form-select" id="origin">
+                                <option value="all">Toutes</option>
+                                <option value="russe">Russe</option>
+                                <option value="américaine">Américaine</option>
+                                <option value="française">Française</option>
+                                <option value="espagnole">Espagnole</option>
+                                <option value="anglaise">Anglaise</option>
+                                <option value="australienne">Australienne</option>
+                                
+                                <!-- Ajoutez d'autres options ici -->
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="morphology" class="form-label">Morphologie</label>
+                            <select class="form-select" id="morphology">
+                                <option value="all">Toutes</option>
+                                <option value="petite">Petite</option>
+                                <option value="moyenne">Moyenne</option>
+                                <option value="grande">Grande</option>
+
+                                <!-- Ajoutez d'autres options ici -->
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="age" class="form-label">Âge</label>
+                            <select class="form-select" id="age">
+                                <option value="all">Tous</option>
+                                <option value="jeune">Jeune</option>
+                                <option value="milf">MILF</option>
+
+                                <!-- Ajoutez d'autres options ici -->
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-warning w-100" onclick="filterCards()">Filtrer</button>
+                        </div>
+                        
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Cartes -->
+         <!-- Carte Modèle -->
+        <!-- 
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="" data-morphology="" data-age="">
+                            <img src="" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">gfvyitf</h5>
+                                <p class="card-text">zgqerhsrtujfsrghfsd:kjfghfgbdg</p>
+                                <a href="" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+ -->
+            <!-- Répétez ce bloc pour chaque carte avec les attributs data-* appropriés -->
+             
+            <div class="row" id="cardsContainer">
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Britni-Kitten.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Britini Kitten</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Britni Kitten.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="française" data-morphology="moyenne" data-age="jeune">
+                        <img src="/assets/images/Carla-Vyxx.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Carla Vyxx</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Carla Vyxx.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Chloe-Temple.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Chloe Temple</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes//Chloe Temple.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="Américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Ella-Alexandra.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Ella Alexandra</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Ella Alexandra.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="russe" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Eva-Elfie.jpg" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Eva Elfie</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Eva Elfie.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/FavoriteLittleSecret.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">FavoriteLittleSecret</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/FavoriteLittleSecret.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/gracewearslace.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Gracewearslace</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/gracewearslace.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Halli-n-Lover.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Halli n Lover</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Halli n Lover.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="moyenne" data-age="jeune">
+                        <img src="/assets/images/Hannah-OwO.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Hannah OwO</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Hannah OwO.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images//JaydeTruran.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">JaydeTruran</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/JaydeTruran.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Julie-Jess.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Julie Jess</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Julie Jess.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="petite" data-age="jeune">
+                        <img src="/assets/images/Kelsey-Kane.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Kelsey Kane</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/Kelsey Kane.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="moyenne" data-age="jeune">
+                            <img src="/assets/images/Layla_Roo.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Layla Roo</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Layla Roo.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="moyenne" data-age="jeune">
+                            <img src="/assets/images/Lilah_Anne.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Lilah Anne</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Lilah Anne.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="française" data-morphology="petite" data-age="jeune">
+                            <img src="/assets/images/Poqssi.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Poqssi</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Poqssi.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="anglaise" data-morphology="moyenne" data-age="jeune">
+                            <img src="/assets/images/Rosaline_Dawn.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Rosaline Dawn</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Rosaline Dawn.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="américaine" data-morphology="moyenne" data-age="jeune">
+                        <img src="/assets/images/Shrooms-Q.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">Shrooms Q</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/ShroomQ.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="espagnole" data-morphology="moyenne" data-age="jeune">
+                            <img src="/assets/images/Sofi_Sane.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Sofi Sane</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Sofi Sane.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="française" data-morphology="moyenne" data-age="milf">
+                        <img src="/assets/images/SweetBodyMary.webp" class="card-img-top" alt="Placeholder">
+                        <div class="card-body">
+                            <h5 class="card-title">SweetBodyMary</h5>
+                            <p class="card-text"></p>
+                            <a href="/pages/artistes/SweetBodyMary.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="russe" data-morphology="grande" data-age="jeune">
+                            <img src="/assets/images/Sweetie_Fox.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Sweetie Fox</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Sweetie Fox.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card bg-secondary text-light" style="width: 100%;" data-origin="australienne" data-morphology="moyenne" data-age="jeune">
+                            <img src="/assets/images/Utah_Jaz.webp" class="card-img-top" alt="Placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Utah Jaz</h5>
+                                <p class="card-text"></p>
+                                <a href="/pages/artistes/Utah Jaz.html" class="btn btn-warning">Consulter les vidéos.</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+
+        </div>
+    </div>
+
+    <footer class="footer bg-light text-center py-3">
+        <div class="container">
+            <span class="text-muted">© 2024 Gentle Leak</span>
+        </div>
+    </footer>
+
+    <script>
+        function filterCards() {
+            const origin = document.getElementById('origin').value;
+            const morphology = document.getElementById('morphology').value;
+            const age = document.getElementById('age').value;
+
+            const cards = document.querySelectorAll('#cardsContainer .card');
+            cards.forEach(card => {
+                const cardOrigin = card.getAttribute('data-origin');
+                const cardMorphology = card.getAttribute('data-morphology');
+                const cardAge = card.getAttribute('data-age');
+
+                if ((origin === 'all' || cardOrigin === origin) &&
+                    (morphology === 'all' || cardMorphology === morphology) &&
+                    (age === 'all' || cardAge === age)) {
+                    card.parentElement.style.display = 'block';
+                } else {
+                    card.parentElement.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

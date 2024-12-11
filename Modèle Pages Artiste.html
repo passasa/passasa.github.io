@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+     <!-- Inclus Bootstrap CSS pour la barre de navigation -->
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidéo hubfuir</title>
+    <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
+
+    <style>
+        /* Mise en page simple */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #0F151E;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .image-container {
+            width: 350px;
+            height: 200px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!--Barre de navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand">Gentle Leak</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index.html">Accueil </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pages/bibliothèque.html">Bibliothèque</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>Retrouvez toutes les vidéos disponible ci-dessous</h1>
+    <p>Cliquez sur les images ci-dessous pour avoir accées à la vidéo.</p>
+
+    <div class="container">
+        <!-- Image cliquable 1 -->
+        <div class="image-container">
+            <a href="">
+                <img src="" alt="Image 1">
+            </a>
+        </div>
+
+</body>
+</html>
