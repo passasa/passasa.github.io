@@ -41,7 +41,7 @@ def generer_html(dossier_html, fichier_liens, nom_fichier="output.html"):
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidéo Brattysis Saison </title>
+    <title>Vidéo Brooke Tilli</title>
     <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
 
     <style>
@@ -131,6 +131,6 @@ def generer_html(dossier_html, fichier_liens, nom_fichier="output.html"):
     print(f"Fichier {nom_fichier} généré avec {len(fichiers_html)} images cliquables.")
 
 # Exemple d'utilisation
-dossier_html = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Brattysis/Saison 35"
-fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Brattysis/Saison 35/Image.txt"  # Remplacez par le chemin de votre fichier texte
+dossier_html = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Brooke Tilli"
+fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Brooke Tilli/Image.txt"  # Remplacez par le chemin de votre fichier texte
 generer_html(dossier_html, fichier_liens)
