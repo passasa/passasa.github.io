@@ -9,14 +9,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vidéo Let's Post It</title>
     <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
-
-   
+    
+    <style>
+        iframe {
+            width: 80%;
+            height: 500px;
+            border: 1px solid #0F151E;
+            display: block;
+            margin: 20px auto;
+        }
+        .btn-container {
+            margin: 20px;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar fixée en haut -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <a class="navbar-brand">Gentle Leak</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -32,15 +49,29 @@
     </nav>
 
     <!-- Page Content -->
-    <h1>[LetsPostIt] Phoebe Blue Getting Saucy 02 03 2025</h1>
-    <iframe src="https://filemoon.to/e/xnd2k91lhi0p/_LetsPostIt__Phoebe_Blue_Getting_Saucy_02_03_2025" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" width="640" height="360" allowfullscreen></iframe>
+    <h1 class="text-center mt-4">[Let's Post It] (25 02 02) Getting Saucy</h1>
 
+    <div class="btn-container">
+        <button class="btn btn-primary" onclick="changeIframe('https://short.icu/GSxV5wFIl')">Abyss</button>
+        <button class="btn btn-secondary" onclick="changeIframe('https://filemoon.to/e/2159wso3xe5o/_Let_s_Post_It___25_02_02__Getting_Saucy')">Filemoon</button>
+        <button class="btn btn-success" onclick="changeIframe('https://cdn-1.files.vc/files/2at/f9a40a77fb4446d27b7c9e964fa19df0.mp4')">Filesvc</button>
+        <button class="btn btn-warning" onclick="resetIframe()">Revenir à l'image</button>
+    </div>
 
+    <iframe id="myIframe" src="https://simp6.jpg5.su/images3/LetsPostIt-Phoebe-Blue-Getting-Saucy-02.03.2025.mp4165c51cbc33ac1ad.jpg"></iframe>
 
+    <!-- Scripts -->
+    <script>
+        function changeIframe(url) {
+            document.getElementById("myIframe").src = url;
+        }
 
-    <!-- Bootstrap and jQuery Scripts -->
-    <script src="https://iamcdn.net/players/replace-domain.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        function resetIframe() {
+            document.getElementById("myIframe").src = "https://simp6.jpg5.su/images3/LetsPostIt-Phoebe-Blue-Getting-Saucy-02.03.2025.mp4165c51cbc33ac1ad.jpg";
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

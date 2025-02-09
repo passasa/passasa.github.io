@@ -3,20 +3,37 @@
 <head>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="/assets/others/Style.css" rel="stylesheet">
+    <link href="/assets/others/Style.css" rel="stylesheet">
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Post It</title>
+    <title>Vidéo Let's Post It</title>
     <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
-
-   
+    
+    <style>
+        iframe {
+            width: 80%;
+            height: 500px;
+            border: 1px solid #0F151E;
+            display: block;
+            margin: 20px auto;
+        }
+        .btn-container {
+            margin: 20px;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar fixée en haut -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <a class="navbar-brand">Gentle Leak</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -32,13 +49,29 @@
     </nav>
 
     <!-- Page Content -->
-    <h1>lpi.24.10.24.cleo.moon.silent.disco.party.mp4</h1>
-    <iframe width="640" height="360" src="https://short.ink/jzfeThQqN" frameborder="0" scrolling="0" allowfullscreen></iframe>
+    <h1 class="text-center mt-4">[Let's Post It] (24 10 24) Silent Disco Party</h1>
 
+    <div class="btn-container">
+        <button class="btn btn-primary" onclick="changeIframe('https://short.icu/jzfeThQqN')">Abyss</button>
+        <button class="btn btn-secondary" onclick="changeIframe('https://filemoon.to/e/j7dbszl6ovlo/_Let_s_Post_It___24_10_24__Silent_Disco_Party')">Filemoon</button>
+        <button class="btn btn-success" onclick="changeIframe('https://cdn-1.files.vc/files/61u/375046c0dfecb1c89a60c93988c67ff6.mp4')">Filesvc</button>
+        <button class="btn btn-warning" onclick="resetIframe()">Revenir à l'image</button>
+    </div>
 
-    <!-- Bootstrap and jQuery Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://iamcdn.net/players/replace-domain.js"></script>
+    <iframe id="myIframe" src="https://simp6.jpg5.su/images3/lpi.24.10.24.cleo.moon.silent.disco.party.mp4f28165c005ffbc2b.jpg"></iframe>
+
+    <!-- Scripts -->
+    <script>
+        function changeIframe(url) {
+            document.getElementById("myIframe").src = url;
+        }
+
+        function resetIframe() {
+            document.getElementById("myIframe").src = "https://simp6.jpg5.su/images3/lpi.24.10.24.cleo.moon.silent.disco.party.mp4f28165c005ffbc2b.jpg";
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
