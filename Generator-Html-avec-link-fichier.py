@@ -48,7 +48,7 @@ def generer_html(dossier_html, fichier_liens, fichier_infos, nom_fichier="output
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidéo Kelsey Kane</title>
+    <title>Vidéo Let's Post It</title>
     <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
     <style>
         /* Mise en page simple */
@@ -129,6 +129,15 @@ def generer_html(dossier_html, fichier_liens, fichier_infos, nom_fichier="output
     </div>
     
     <!-- Inclus les scripts Bootstrap JS -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let infoDivs = document.querySelectorAll(".info");
+            infoDivs.forEach(div => {
+                div.style.fontWeight = "bold";
+            });
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -142,7 +151,7 @@ def generer_html(dossier_html, fichier_liens, fichier_infos, nom_fichier="output
     print(f"Fichier {nom_fichier} généré avec {len(fichiers_html)} images cliquables.")
 
 # Exemple d'utilisation
-dossier_html = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Kelsey Kane"
-fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Kelsey Kane/Image.txt"
-fichier_infos = "C:/Users/test/Desktop/Image et Vidéo Content/Kelsey Kane/Infos.txt"  # Nouveau fichier texte contenant les infos
+dossier_html = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Let's Post It"
+fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Let's Post It/Image.txt"
+fichier_infos = "C:/Users/test/Desktop/Image et Vidéo Content/Let's Post It/Infos.txt"  # Nouveau fichier texte contenant les infos
 generer_html(dossier_html, fichier_liens, fichier_infos)
