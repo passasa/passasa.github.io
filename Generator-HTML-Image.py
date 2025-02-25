@@ -16,30 +16,76 @@ def generer_html(nombre_images, nom_fichier="output.html"):
         }
 
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .image-container {
-            width: 350px;
-            height: 200px;
+            background: #291536;
+            border-radius: 15px;
+            padding: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
         .image-container img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1rem;
+            object-fit: contain; /* Afficher l'image en entier */
+            aspect-ratio: 16/9; /* Garde le format 16:9 */
+            background-color: black; /* Optionnel : remplit l'espace vide */
         }
 
-        .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        .info {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-top: auto;
+        }
+
+        .image-container a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+
+        h1 {
+            margin: 2rem 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            color: #cccccc;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin: 1rem 0;
+            }
         }
     </style>
 </head>

@@ -151,7 +151,7 @@ def generer_html(dossier_html, fichier_liens, fichier_infos, nom_fichier="output
     print(f"Fichier {nom_fichier} généré avec {len(fichiers_html)} images cliquables.")
 
 # Exemple d'utilisation
-dossier_html = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Lets Post It"
-fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Let's Post It/Image.txt"
-fichier_infos = "C:/Users/test/Desktop/Image et Vidéo Content/Let's Post It/Infos.txt"  # Nouveau fichier texte contenant les infos
+dossier_html = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Eva Elfie"
+fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Eva Elfie/Image.txt"
+fichier_infos = "C:/Users/test/Desktop/Image et Vidéo Content/Eva Elfie/Infos.txt"  # Nouveau fichier texte contenant les infos
 generer_html(dossier_html, fichier_liens, fichier_infos)
