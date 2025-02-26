@@ -26,7 +26,7 @@ def creer_fichiers_html(source_html, nombre_fichiers, dossier_sortie):
 
 # Exemple d'utilisation
 source_html = "C:/Users/test/Documents/Html Source/1.html"  # Remplacez par le chemin de votre fichier source
-nombre_fichiers = 121          # Nombre de fichiers à générer
-dossier_sortie = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Eva Elfie"  # Dossier de sortie
+nombre_fichiers = 9          # Nombre de fichiers à générer
+dossier_sortie = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/He's Got Rizz"  # Dossier de sortie
 
 creer_fichiers_html(source_html, nombre_fichiers, dossier_sortie)
