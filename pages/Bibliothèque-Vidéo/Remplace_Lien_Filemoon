@@ -1,0 +1,44 @@
+import os
+import re
+
+# Configuration
+dossier_cible = "C:/Users/test/Documents/GitHub/passasa.github.io/pages/Bibliothèque-Vidéo/Eva Elfie"
+fichier_liens = "C:/Users/test/Desktop/Image et Vidéo Content/Eva Elfie/Filemoon.txt"
+
+# Lire les liens depuis le fichier
+with open(fichier_liens, "r", encoding="utf-8") as f:
+    liens = [ligne.strip() for ligne in f.readlines() if ligne.strip()]
+
+# Lister les fichiers HTML
+fichiers_html = [f for f in os.listdir(dossier_cible) if f.endswith(".html")]
+fichiers_html.sort()
+
+# Vérifier si on a assez de liens
+if len(liens) < len(fichiers_html):
+    print("Erreur: Pas assez de liens pour tous les fichiers HTML.")
+else:
+    # Traitement des fichiers HTML
+    for i, fichier in enumerate(fichiers_html):
+        chemin_fichier = os.path.join(dossier_cible, fichier)
+        with open(chemin_fichier, "r", encoding="utf-8") as f:
+            contenu = f.read()
+        
+        # Remplacement ou ajout du lien Filemoon dans le bouton correspondant
+        if "changeIframe('')" in contenu:
+            nouveau_contenu = re.sub(
+                r"(onclick=\"changeIframe\(''\)\")",
+                fr"onclick=\"changeIframe('{liens[i]}')\"",
+                contenu
+            )
+        else:
+            nouveau_contenu = re.sub(
+                r"(onclick=\"changeIframe\(')https://filemoon\.to/d/[^']*('\)\")",
+                fr"\1{liens[i]}\2",
+                contenu
+            )
+        
+        # Écriture du fichier modifié
+        with open(chemin_fichier, "w", encoding="utf-8") as f:
+            f.write(nouveau_contenu)
+        
+        print(f"Lien remplacé ou ajouté dans {fichier}")
