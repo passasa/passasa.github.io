@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque | Gentle Leak</title>
+    <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/others/Style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {background: #000; color: #fff; min-height: 100vh; font-family: 'Roboto', sans-serif;}
+        .page-header {max-width: 1200px; margin: 2rem auto 1.5rem; padding: 0 1rem; text-align: center;}
+        .page-header h1 {font-size: 36px; font-weight: 700; color: #fff; margin-bottom: .5rem;}
+        .page-header h1 span {color: #ff9000;}
+        .page-header p {color: #999; font-size: 15px; max-width: 600px; margin: 0 auto;}
+        #searchBar {max-width: 1200px; margin: 0 auto 2rem; padding: 0 1rem;}
+        #searchBar input {width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 14px 20px; border-radius: 6px; font-size: 15px; transition: all 0.2s;}
+        #searchBar input:focus {outline: none; border-color: #ff9000; box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);}
+        #searchBar input::placeholder {color: #666;}
+        #creatorsGrid {max-width: 1200px; margin: 0 auto 4rem; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;}
+        .creator-card {background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; text-decoration: none; display: flex; flex-direction: column; position: relative;}
+        .creator-card:hover {border-color: #ff9000; transform: translateY(-6px); box-shadow: 0 12px 32px rgba(255, 144, 0, 0.25);}
+        .creator-card::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #ff9000; transform: scaleX(0); transition: transform 0.3s;}
+        .creator-card:hover::before {transform: scaleX(1);}
+        .creator-img {width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;}
+        .creator-info {padding: 20px;}
+        .creator-name {font-size: 20px; font-weight: 700; color: #fff; margin: 0 0 8px;}
+        .creator-stats {font-size: 13px; color: #999; margin: 0;}
+        .creator-stats strong {color: #ff9000; font-weight: 600;}
+        .creator-date {color: #666; font-size: 11px; margin-top: 4px; display: block;}
+        .no-results {text-align: center; color: #666; padding: 3rem 1rem; font-size: 16px;}
+        @media (max-width: 700px) {
+            .page-header h1 {font-size: 28px;}
+            #creatorsGrid {grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px;}
+            .creator-name {font-size: 16px;}
+            .creator-info {padding: 14px;}
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand">Gentle <span style="color:#ff9000">Leak</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/index.html">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/pages/bibliothèque.html">Bibliothèque</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Bibliothèque <span>Créateurs</span></h1>
+        <p>Liste des créateurs avec vidéos disponibles.</p>
+    </div>
+
+    <div id="searchBar">
+        <input type="text" id="searchInput" placeholder="🔍 Rechercher un créateur..." />
+    </div>
+
+    <div id="creatorsGrid"></div>
+    <div id="noResults" class="no-results d-none">Aucun créateur trouvé</div>
+
+    <script>
+    (function() {
+        const grid = document.getElementById('creatorsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        let allCreators = [];
+
+        const imageMap = {
+            'brooke-tilli': '/assets/images/Brooke_Tilli.jpg',
+            'cutie-kim': '/assets/images/Cutie-Kim.jpg',
+            'chloe-temple': '/assets/images/Chloe-Temple.webp',
+            'ella-alexandra': '/assets/images/Ella-Alexandra.webp',
+            'eva-elfie': '/assets/images/Eva-Elfie.jpg',
+            'hannahowo': '/assets/images/Hannahowo.jpg',
+            'hes-got-rizz': '/assets/images/hes_got_rizz.png',
+            'kelsey-kane': '/assets/images/Kelsey-Kane.webp',
+            'lets-post-it': '/assets/images/Lets-post-it.webp',
+            'poqssi': '/assets/images/Poqssi.webp',
+            'shrooms-q': '/assets/images/Shrooms-Q.webp',
+            'sweetbodymary': '/assets/images/SweetBodyMary.webp',
+            'sweetie-fox': '/assets/images/Sweetie_Fox.webp',
+        };
+
+        function getCreatorImage(slug) {
+            return imageMap[slug] || '/assets/images/placeholder.svg';
+        }
+
+        function escapeHtml(str) {
+            const map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
+            return (str || '').replace(/[&<>"']/g, s => map[s]);
+        }
+
+        function normalize(str) {
+            return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+
+        fetch('/assets/data/videos.json')
+            .then(r => r.json())
+            .then(videos => {
+                const artistMap = {};
+                videos.forEach(v => {
+                    const slug = v.artist_slug;
+                    if (!artistMap[slug]) {
+                        artistMap[slug] = {
+                            name: v.artist,
+                            slug: slug,
+                            count: 0,
+                            latestDate: v.date || ''
+                        };
+                    }
+                    artistMap[slug].count++;
+                    if (v.date && (!artistMap[slug].latestDate || v.date > artistMap[slug].latestDate)) {
+                        artistMap[slug].latestDate = v.date;
+                    }
+                });
+
+                allCreators = Object.values(artistMap).sort((a, b) => a.name.localeCompare(b.name));
+                render(allCreators);
+
+                searchInput.addEventListener('input', () => {
+                    const q = normalize(searchInput.value.trim());
+                    if (!q) {
+                        render(allCreators);
+                        return;
+                    }
+                    const filtered = allCreators.filter(c =>
+                        normalize(c.name).includes(q) || normalize(c.slug).includes(q)
+                    );
+                    render(filtered);
+                });
+            })
+            .catch(e => {
+                grid.innerHTML = '<div class="no-results">Erreur de chargement des données</div>';
+                console.error('Erreur:', e);
+            });
+
+        function render(creators) {
+            if (!creators.length) {
+                grid.classList.add('d-none');
+                noResults.classList.remove('d-none');
+                return;
+            }
+            grid.classList.remove('d-none');
+            noResults.classList.add('d-none');
+            grid.innerHTML = creators.map(c => {
+                const imgSrc = getCreatorImage(c.slug);
+                const dateText = c.latestDate ? `<span class="creator-date">Dernière: ${escapeHtml(c.latestDate)}</span>` : '';
+                return `
+                <a href="/artist.html?artist=${encodeURIComponent(c.slug)}" class="creator-card">
+                    <img src="${imgSrc}"
+                         onerror="this.onerror=null; this.src='/assets/images/placeholder.svg';"
+                         alt="${escapeHtml(c.name)}"
+                         class="creator-img"
+                         loading="lazy">
+                    <div class="creator-info">
+                        <h3 class="creator-name">${escapeHtml(c.name)}</h3>
+                        <p class="creator-stats">
+                            <strong>${c.count}</strong> vidéo${c.count > 1 ? 's' : ''}
+                            ${dateText}
+                        </p>
+                    </div>
+                </a>`;
+            }).join('');
+        }
+    })();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

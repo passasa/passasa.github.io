@@ -1,0 +1,16 @@
+iframe {
+    width: 80%;
+    height: 500px;
+    border: 1px solid #0F151E;
+    display: block;
+    margin: 20px auto;
+}
+.btn-container {
+    margin: 20px;
+    text-align: center;
+}
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}

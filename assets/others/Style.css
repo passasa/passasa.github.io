@@ -1,0 +1,199 @@
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding-top: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+iframe {
+    border: none;
+    margin-top: 20px;
+}
+
+.navbar {
+    width: 100%;
+    background-color: #000000 !important;
+    border-bottom: 2px solid #1a1a1a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff !important;
+    letter-spacing: -0.5px;
+    text-transform: none;
+}
+
+.navbar-brand span {
+    color: #ff9000;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 8px 16px;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: #ff9000 !important;
+}
+
+.container {
+    flex: 1;
+}
+.footer {
+    margin-top: auto;
+}
+
+/* Utility spacing */
+.mt-2{margin-top:.5rem}
+.mt-3{margin-top:1rem}
+.mt-4{margin-top:1.5rem}
+.mb-2{margin-bottom:.5rem}
+.mb-3{margin-bottom:1rem}
+.mb-4{margin-bottom:1.5rem}
+
+/* Modern button override */
+.btn-warning {
+    background: #ff9000;
+    border: none;
+    color: #000000;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(255,144,0,0.3);
+    transition: all 0.2s ease;
+}
+.btn-warning:hover {
+    background: #ffa31a;
+    color: #000000;
+    box-shadow: 0 4px 12px rgba(255,144,0,0.5);
+    transform: translateY(-1px);
+}
+
+/* Tag badge reused */
+.tag {
+    display:inline-block;
+    background:#1a1a1a;
+    color:#ff9000;
+    border: 1px solid #2a2a2a;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 4px 4px 0;
+    transition: all 0.2s ease;
+}
+.tag:hover {
+    background: #ff9000;
+    color: #000000;
+    border-color: #ff9000;
+}
+
+/* Grid helper */
+.grid {display:grid;gap:1rem}
+.grid.cols-4 {grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+
+/* Card refresh */
+.video-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+.video-card:hover {
+    border-color: #ff9000;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(255,144,0,0.2);
+}
+.video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #ff9000;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+.video-card:hover::before {
+    transform: scaleX(1);
+}
+.video-card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 0;
+    margin-bottom: 0;
+    transition: transform 0.3s ease;
+}
+.video-card:hover img {
+    transform: scale(1.05);
+}
+.video-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 12px 12px 6px;
+    color: #ffffff;
+    line-height: 1.4;
+}
+.video-card .meta {
+    font-size: 12px;
+    color: #999999;
+    padding: 0 12px 12px;
+    font-weight: 400;
+}
+
+/* Related mini items (fallback if not inlined style) */
+.related-item {text-decoration:none}
+.related-item span {display:block;margin-top:2px}
+
+/* Responsive improvements */
+@media (max-width: 600px){
+  .video-card h3 {font-size:.9rem}
+  .video-card img {aspect-ratio:16/10}
+}
+
+@media (max-width: 850px) {
+    iframe {
+        width: 100%; /* L'iframe occupe toute la largeur de l'écran */
+        height: auto; /* Ajuste la hauteur automatiquement */
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem; /* Taille de police réduite pour la marque */
+    }
+
+    .navbar-toggler {
+        font-size: 1rem; /* Taille de police réduite pour le bouton de navigation */
+    }
+
+    .container {
+        padding: 0 10px; /* Ajoute un peu de padding pour les petits écrans */
+    }
+
+    .footer {
+        font-size: 0.85rem; /* Taille de police réduite pour le texte du pied de page */
+    }
+}

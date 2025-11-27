@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Artiste | Gentle Leak</title>
+  <link rel="shortcut icon" href="/assets/images/Logo-Head.webp" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/assets/others/Style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body{background:#000;color:#fff}
+    .artist-header{max-width:1200px;margin:2rem auto 0;padding:0 1rem;}
+    .artist-header h1{font-size:32px;font-weight:700;color:#fff;margin:0 0 .5rem;letter-spacing:-0.5px}
+    .artist-header h1 span{color:#ff9000}
+    .artist-header p{color:#999;font-size:14px;margin:0 0 1.5rem;font-weight:500}
+    #videosGrid{max-width:1200px;margin:0 auto 3rem;padding:0 1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+    .video-card{cursor:pointer;text-decoration:none;color:#fff;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;overflow:hidden;transition:all 0.3s ease;position:relative}
+    .video-card:hover{border-color:#ff9000;transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,144,0,0.2)}
+    .video-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#ff9000;transform:scaleX(0);transition:transform 0.3s}
+    .video-card:hover::before{transform:scaleX(1)}
+    /* Image sizing */
+    .video-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:0;margin-bottom:0;transition:transform 0.3s}
+    .video-card:hover img{transform:scale(1.05)}
+    .video-card h3{font-size:14px;font-weight:600;margin:12px 12px 6px;color:#fff;line-height:1.4}
+    .video-card .meta{font-size:12px;color:#999;padding:0 12px 12px;font-weight:400}
+    #status{max-width:1200px;margin:2rem auto;text-align:center;color:#666}
+    #searchWrap{max-width:1200px;margin:0 auto 1.5rem;padding:0 1rem;display:flex;gap:.75rem;}
+    #searchWrap input{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:12px 16px;border-radius:6px;font-size:14px;transition:all 0.2s}
+    #searchWrap input:focus{outline:none;border-color:#ff9000;box-shadow:0 0 0 3px rgba(255,144,0,0.1)}
+    #searchWrap input::placeholder{color:#666}
+  #searchWrap select{background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:12px 12px;border-radius:6px;font-size:14px;min-width:190px;transition:all 0.2s}
+  #searchWrap select:focus{outline:none;border-color:#ff9000;box-shadow:0 0 0 3px rgba(255,144,0,0.1)}
+    @media (max-width:700px){.artist-header h1{font-size:24px} #videosGrid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}}
+  </style>
+</head>
+<body class="bg-dark text-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">Gentle <span style="color:#ff9000">Leak</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link" href="/pages/bibliothèque.html">Bibliothèque</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="status">Chargement...</div>
+  <div class="artist-header d-none" id="artistHeader">
+    <h1 id="artistName"></h1>
+    <p id="artistCount"></p>
+  </div>
+  <div id="searchWrap" class="d-none">
+    <input type="text" id="searchInput" placeholder="🔍 Rechercher parmi les vidéos..." />
+    <select id="sortSelect" aria-label="Trier les vidéos">
+      <option value="date_desc" selected>📅 Date (récent → ancien)</option>
+      <option value="date_asc">📅 Date (ancien → récent)</option>
+      <option value="title_asc">🔠 Titre (A → Z)</option>
+      <option value="title_desc">🔡 Titre (Z → A)</option>
+    </select>
+  </div>
+  <div id="videosGrid"></div>
+
+  <script src="/assets/js/artist.js" defer></script>
+</body>
+</html>
