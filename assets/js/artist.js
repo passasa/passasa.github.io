@@ -93,18 +93,34 @@
 
   if(!artistSlug){statusEl.textContent='Paramètre ?artist= manquant';return;}
 
-  fetch('/assets/data/videos.json')
-    .then(r=>{if(!r.ok) throw new Error('Chargement JSON impossible'); return r.json();})
-    .then(list=>{
+  Promise.all([
+    fetch('/assets/data/videos.json').then(r=>{if(!r.ok) throw new Error('Chargement JSON impossible'); return r.json();}),
+    fetch('/assets/data/creators.json').then(r=>{if(!r.ok) throw new Error('Chargement creators impossible'); return r.json();})
+  ])
+  .then(([list, creatorsMap]) => {
     // Collect videos for this artist and sort Z -> A by normalized title
-  const artistVideos = list.filter(v=>v.artist_slug===artistSlug);
-      if(!artistVideos.length){statusEl.textContent='Aucune vidéo trouvée pour cet artiste.';return;}
+    const artistVideos = list.filter(v=>v.artist_slug===artistSlug);
+    // Also find child categories (slugs that begin with artistSlug + '-')
+    const childVideos = list.filter(v=> v.artist_slug && v.artist_slug.startsWith(artistSlug + '-'));
+    // Group child videos by their exact artist_slug
+    const childGroups = {};
+    childVideos.forEach(v=>{
+      if(!childGroups[v.artist_slug]) childGroups[v.artist_slug]=[];
+      childGroups[v.artist_slug].push(v);
+    });
+    const childSlugs = Object.keys(childGroups).sort();
+
+    if(!artistVideos.length && childSlugs.length===0){statusEl.textContent='Aucune vidéo trouvée pour cet artiste.';return;}
       // Set header
       statusEl.remove();
       headerEl.classList.remove('d-none');
       searchWrap.classList.remove('d-none');
-      nameEl.textContent = artistVideos[0].artist;
-      countEl.textContent = artistVideos.length + ' vidéo(s)';
+      // If there are direct videos, use that artist name; otherwise derive from slug
+      const displayName = artistVideos.length ? artistVideos[0].artist : (artistSlug.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+      nameEl.textContent = displayName;
+      // Count: direct videos if present, else sum of child videos
+      const totalCount = artistVideos.length ? artistVideos.length : childSlugs.reduce((s,slug)=> s + childGroups[slug].length, 0);
+      countEl.textContent = totalCount + ' vidéo(s)';
 
       function render(videos){
         const cmp = getComparator(sortSelect.value);
@@ -123,7 +139,38 @@
         });
       }
 
-  render(artistVideos);
+  // If there are child categories and no direct videos, render children as category cards
+  function renderChildrenAsCategories(){
+    gridEl.innerHTML = '';
+    childSlugs.forEach(slug => {
+      const vids = childGroups[slug];
+      const v0 = vids[0];
+      // Use creators.json first, fallback to first video thumbnail or placeholder
+      let thumb = creatorsMap[slug] || (v0 && v0.thumbnail && v0.thumbnail !== '/assets/images/placeholder.svg' ? v0.thumbnail : '/assets/images/placeholder.svg');
+      
+      // Derive a nice display name from slug (remove parent prefix)
+      function titleize(s){
+        const parts = s.split('-');
+        if(parts.length>1) parts.shift();
+        const base = parts.join(' ').replace(/[_]+/g,' ');
+        return base.replace(/\b\w/g, ch => ch.toUpperCase());
+      }
+      const displayTitle = (v0 && v0.artist && !v0.artist.toLowerCase().startsWith(slug)) ? v0.artist : titleize(slug);
+
+      const a = document.createElement('a');
+      a.href = '/artist.html?artist='+encodeURIComponent(slug);
+      a.className = 'video-card';
+      a.innerHTML = `\n        <img src='${escapeHtml(thumb)}' alt='${escapeHtml(displayTitle)}' loading='lazy'>\n        <h3>${escapeHtml(displayTitle)}</h3>\n        <div class='meta'>${vids.length} vidéo(s)</div>\n      `;
+      gridEl.appendChild(a);
+    });
+  }
+
+  if(childSlugs.length>0 && artistVideos.length===0){
+    // Show child categories
+    renderChildrenAsCategories();
+  } else {
+    render(artistVideos);
+  }
 
       let lastQuery='';
       searchInput.addEventListener('input',()=>{

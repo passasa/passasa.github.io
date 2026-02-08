@@ -4,7 +4,8 @@
   const id = params.get('v');
   const statusEl = document.getElementById('status');
   const titleEl = document.getElementById('videoTitle');
-  const iframeEl = document.getElementById('videoIframe');
+  const thumbnailEl = document.getElementById('videoThumbnail');
+  const linkEl = document.getElementById('videoLink');
   const metaEl = document.getElementById('videoMeta');
   const relatedEl = document.getElementById('related');
 
@@ -61,7 +62,9 @@
       }
       statusEl.remove();
       titleEl.textContent = video.title;
-      iframeEl.src = video.iframe;
+      thumbnailEl.src = video.thumbnail;
+      thumbnailEl.alt = video.title;
+      linkEl.href = video.iframe;
       metaEl.innerHTML = `Artiste: <strong>${escapeHtml(video.artist)}</strong><br>Date: ${escapeHtml(video.date)}<br>Tags: ${video.tags.map(t=>`<span class='tag'>${escapeHtml(t)}</span>`).join(' ')}`;
 
       // Related videos (same artist, different id) sorted by date (newest first), then title Z->A

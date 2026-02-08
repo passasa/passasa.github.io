@@ -12,8 +12,9 @@
     body{background:#000;color:#fff}
     .video-shell {max-width:1200px;margin:2rem auto;padding:0 1rem;}    
     #videoTitle {font-size:24px;font-weight:700;margin-bottom:1.5rem;color:#fff;line-height:1.3}
-    .video-wrapper{background:#000;border-radius:0;overflow:hidden;margin-bottom:1.5rem}
-    #videoIframe {width:100%;aspect-ratio:16/9;border:0;background:#000;}
+    .video-container {text-align:center;margin-bottom:1.5rem;}
+    #videoThumbnail {object-fit:cover;background:#1a1a1a;}
+    #videoLink:hover {background:#ffb333;text-decoration:none;color:#000;}
     #videoMeta {margin-top:1rem;font-size:14px;color:#999;padding:1rem;background:#1a1a1a;border-radius:6px}
     #videoMeta strong{color:#ff9000}
     .tag {display:inline-block;background:#2a2a2a;color:#ff9000;border:1px solid #333;padding:4px 10px;border-radius:3px;font-size:11px;font-weight:600;text-transform:uppercase;margin:4px 4px 0 0}
@@ -45,8 +46,11 @@
   <div class="video-shell">
     <div id="status" class="text-secondary mb-2">Chargement...</div>
     <h1 id="videoTitle"></h1>
-    <div class="video-wrapper">
-      <iframe id="videoIframe" allowfullscreen loading="lazy"></iframe>
+    <div class="video-container">
+      <img id="videoThumbnail" src="" alt="" style="width:100%;max-width:600px;border-radius:6px;margin:0 auto 1rem;display:block;">
+      <a id="videoLink" class="btn btn-primary" style="display:block;width:fit-content;padding:12px 24px;font-size:16px;font-weight:700;text-decoration:none;background:#ff9000;color:#000;border-radius:6px;transition:all 0.3s ease;margin:0 auto 1.5rem;" target="_blank">
+        ▶ Voir la vidéo sur Fileditch
+      </a>
     </div>
     <div id="videoMeta"></div>
     <h2 class="related-title">Plus de vidéos similaires</h2>

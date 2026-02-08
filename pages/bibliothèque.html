@@ -19,7 +19,9 @@
         #searchBar input:focus {outline: none; border-color: #ff9000; box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);}
         #searchBar input::placeholder {color: #666;}
         #creatorsGrid {max-width: 1200px; margin: 0 auto 4rem; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;}
-        .creator-card {background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; text-decoration: none; display: flex; flex-direction: column; position: relative;}
+        /* Each group (parent + its children) should occupy a full row so children appear under the parent */
+        /* regular grid for creator cards */
+        .creator-card {background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; text-decoration: none; display: flex; flex-direction: column; position: relative; max-width: 100%;}
         .creator-card:hover {border-color: #ff9000; transform: translateY(-6px); box-shadow: 0 12px 32px rgba(255, 144, 0, 0.25);}
         .creator-card::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #ff9000; transform: scaleX(0); transition: transform 0.3s;}
         .creator-card:hover::before {transform: scaleX(1);}
@@ -70,27 +72,7 @@
         const searchInput = document.getElementById('searchInput');
         const noResults = document.getElementById('noResults');
         let allCreators = [];
-
-        const imageMap = {
-            'bratty-sis': '/assets/images/Bratty-Sis.png',
-            'brooke-tilli': '/assets/images/Brooke-Tilli.jpg',
-            'cutie-kim': '/assets/images/Cutie-Kim.jpg',
-            'chloe-temple': '/assets/images/Chloe-Temple.webp',
-            'ella-alexandra': '/assets/images/Ella-Alexandra.webp',
-            'eva-elfie': '/assets/images/Eva-Elfie.jpg',
-            'hannahowo': '/assets/images/Hannahowo.jpg',
-            'hes-got-rizz': '/assets/images/hes_got_rizz.png',
-            'kelsey-kane': '/assets/images/Kelsey-Kane.jpg',
-            'lets-post-it': '/assets/images/Lets-post-it.webp',
-            'poqssi': '/assets/images/Poqssi.webp',
-            'shrooms-q': '/assets/images/Shrooms-Q.webp',
-            'sweetbodymary': '/assets/images/SweetBodyMary.jpg',
-            'sweetie-fox': '/assets/images/Sweetie_Fox.webp',
-        };
-
-        function getCreatorImage(slug) {
-            return imageMap[slug] || '/assets/images/placeholder.svg';
-        }
+        let creatorsMap = {};
 
         function escapeHtml(str) {
             const map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
@@ -101,45 +83,119 @@
             return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         }
 
-        fetch('/assets/data/videos.json')
-            .then(r => r.json())
-            .then(videos => {
-                const artistMap = {};
-                videos.forEach(v => {
-                    const slug = v.artist_slug;
-                    if (!artistMap[slug]) {
-                        artistMap[slug] = {
-                            name: v.artist,
-                            slug: slug,
-                            count: 0,
-                            latestDate: v.date || ''
-                        };
-                    }
-                    artistMap[slug].count++;
-                    if (v.date && (!artistMap[slug].latestDate || v.date > artistMap[slug].latestDate)) {
-                        artistMap[slug].latestDate = v.date;
-                    }
-                });
+        function getCreatorImage(slug) {
+            return creatorsMap[slug] || '/assets/images/placeholder.svg';
+        }
 
-                allCreators = Object.values(artistMap).sort((a, b) => a.name.localeCompare(b.name));
-                render(allCreators);
-
-                searchInput.addEventListener('input', () => {
-                    const q = normalize(searchInput.value.trim());
-                    if (!q) {
-                        render(allCreators);
-                        return;
-                    }
-                    const filtered = allCreators.filter(c =>
-                        normalize(c.name).includes(q) || normalize(c.slug).includes(q)
-                    );
-                    render(filtered);
-                });
-            })
-            .catch(e => {
-                grid.innerHTML = '<div class="no-results">Erreur de chargement des données</div>';
-                console.error('Erreur:', e);
+        // Fetch both creators.json and videos.json
+        Promise.all([
+            fetch('/assets/data/creators.json').then(r => r.json()),
+            fetch('/assets/data/videos.json').then(r => r.json())
+        ])
+        .then(([creators, videos]) => {
+            creatorsMap = creators;
+            
+            const artistMap = {};
+            
+            // First pass: collect all artists with their video counts
+            videos.forEach(v => {
+                const slug = v.artist_slug;
+                if (!artistMap[slug]) {
+                    artistMap[slug] = {
+                        name: v.artist,
+                        slug: slug,
+                        count: 0,
+                        latestDate: v.date || '',
+                        children: []
+                    };
+                }
+                artistMap[slug].count++;
+                if (v.date && (!artistMap[slug].latestDate || v.date > artistMap[slug].latestDate)) {
+                    artistMap[slug].latestDate = v.date;
+                }
             });
+            
+            const parentNames = {'mofos': 'MOFOS'};
+            const allSlugs = Object.keys(artistMap);
+            const childrenSlugs = new Set();
+            const parentsByPrefix = {};
+            
+            // Find potential parents by looking for common prefixes
+            // For each multi-part slug, check if a simpler prefix exists OR should be created
+            allSlugs.forEach(slug => {
+                const parts = slug.split('-');
+                // Try progressively simpler parents
+                for (let i = parts.length - 1; i > 0; i--) {
+                    const potentialParent = parts.slice(0, i).join('-');
+                    // Check if parent exists OR is "mofos" (special case: create virtual parent)
+                    if (artistMap[potentialParent] || potentialParent === 'mofos') {
+                        if (!parentsByPrefix[potentialParent]) {
+                            parentsByPrefix[potentialParent] = [];
+                        }
+                        parentsByPrefix[potentialParent].push(slug);
+                        childrenSlugs.add(slug);
+                        console.log(`Found parent-child: ${potentialParent} <- ${slug}`);
+                        break;
+                    }
+                }
+            });
+            
+            // Create virtual parent entries if they don't exist (only for found parents)
+            Object.keys(parentsByPrefix).forEach(prefix => {
+                if (!artistMap[prefix]) {
+                    artistMap[prefix] = {
+                        name: parentNames[prefix] || prefix.toUpperCase(),
+                        slug: prefix,
+                        count: 0,
+                        latestDate: '',
+                        children: []
+                    };
+                }
+            });
+            
+            // Link children to parents and calculate parent stats
+            Object.keys(parentsByPrefix).forEach(prefix => {
+                const parent = artistMap[prefix];
+                console.log(`Linking ${parentsByPrefix[prefix].length} children to parent "${prefix}"`);
+                parentsByPrefix[prefix].forEach(childSlug => {
+                    const child = artistMap[childSlug];
+                    if (child) {
+                        parent.children.push(child);
+                        parent.count += child.count;
+                        if (child.latestDate > parent.latestDate) {
+                            parent.latestDate = child.latestDate;
+                        }
+                    }
+                });
+                console.log(`Parent "${prefix}" now has ${parent.children.length} children and ${parent.count} videos`);
+            });
+            
+            // Build final list: only include parents (not children)
+            allCreators = Object.values(artistMap)
+                .filter(a => !childrenSlugs.has(a.slug))
+                .sort((a, b) => a.name.localeCompare(b.name));
+            
+            console.log('Final creators:', allCreators.map(c => ({name: c.name, children: c.children.length, count: c.count})));
+            console.log('MOFOS details:', allCreators.find(c => c.slug === 'mofos'));
+            render(allCreators);
+
+            searchInput.addEventListener('input', () => {
+                const q = normalize(searchInput.value.trim());
+                if (!q) {
+                    render(allCreators);
+                    return;
+                }
+                const filtered = allCreators.filter(c =>
+                    normalize(c.name).includes(q) || normalize(c.slug).includes(q) ||
+                    c.children.some(ch => normalize(ch.name).includes(q) || normalize(ch.slug).includes(q))
+                );
+                render(filtered);
+            });
+        })
+        .catch(e => {
+            grid.innerHTML = '<div class="no-results">Erreur de chargement des données</div>';
+            console.error('Erreur:', e);
+        });
 
         function render(creators) {
             if (!creators.length) {
@@ -149,11 +205,16 @@
             }
             grid.classList.remove('d-none');
             noResults.classList.add('d-none');
-            grid.innerHTML = creators.map(c => {
+            
+            // Render only parent cards in the library grid
+            grid.innerHTML = '';
+            creators.forEach(c => {
                 const imgSrc = getCreatorImage(c.slug);
                 const dateText = c.latestDate ? `<span class="creator-date">Dernière: ${escapeHtml(c.latestDate)}</span>` : '';
-                return `
-                <a href="/artist.html?artist=${encodeURIComponent(c.slug)}" class="creator-card">
+                const a = document.createElement('a');
+                a.href = `/artist.html?artist=${encodeURIComponent(c.slug)}`;
+                a.className = 'creator-card';
+                a.innerHTML = `
                     <img src="${imgSrc}"
                          onerror="this.onerror=null; this.src='/assets/images/placeholder.svg';"
                          alt="${escapeHtml(c.name)}"
@@ -166,8 +227,9 @@
                             ${dateText}
                         </p>
                     </div>
-                </a>`;
-            }).join('');
+                `;
+                grid.appendChild(a);
+            });
         }
     })();
     </script>
