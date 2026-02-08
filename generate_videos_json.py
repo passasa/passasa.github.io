@@ -3,7 +3,7 @@ import json, os, re, sys
 # Configuration
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), 'content')
 OUTPUT_JSON = os.path.join(os.path.dirname(__file__), 'assets', 'data', 'videos.json')
-THUMB_ROOT = './assets/images/videos'
+THUMB_ROOT = '/assets/images/videos'
 
 slug_cache = {}
 
@@ -86,7 +86,7 @@ def build_entries():
             for ext in ('webp', 'jpg', 'jpeg', 'png'):
                 colocated = os.path.join(c_path, f"{title_raw}.{ext}")
                 if os.path.isfile(colocated):
-                    thumb_rel = f"./content/{rel_folder}/{title_raw}.{ext}"
+                    thumb_rel = f"/content/{rel_folder}/{title_raw}.{ext}"
                     break
 
             # If not found colocated, check a dedicated assets/images/videos/<creator_slug>/ folder
@@ -101,7 +101,7 @@ def build_entries():
 
             # Final fallback is the site placeholder
             if thumb_rel is None:
-                thumb_rel = './assets/images/placeholder.svg'
+                thumb_rel = '/assets/images/placeholder.svg'
             entry = {
                 'id': vid_id,
                 'artist': creator_name.replace('-', ' ').title(),
@@ -158,12 +158,12 @@ def main():
             for ext in ('webp','jpg','jpeg','png'):
                 candidate = os.path.join(images_root, f"{base}.{ext}")
                 if os.path.isfile(candidate):
-                    thumb = f"./assets/images/{base}.{ext}"
+                    thumb = f"/assets/images/{base}.{ext}"
                     break
             if thumb:
                 break
         if not thumb:
-            thumb = './assets/images/placeholder.svg'
+            thumb = '/assets/images/placeholder.svg'
         creators_map[slug] = thumb
     # Optional: merge with existing if present (preserve manual metadata)
     existing = []
@@ -179,16 +179,16 @@ def main():
         if e['id'] in existing_map:
             old = existing_map[e['id']]
             # Decide thumbnail: prefer newly detected thumbnails (they include
-            # correct ./content/ or ./assets/images paths). Only fall back to the
+            # correct /content/ or /assets/images paths). Only fall back to the
             # existing thumbnail if the new one is a placeholder.
             new_thumb = e.get('thumbnail')
             old_thumb = old.get('thumbnail')
-            if new_thumb and new_thumb != './assets/images/placeholder.svg':
+            if new_thumb and new_thumb != '/assets/images/placeholder.svg':
                 e['thumbnail'] = new_thumb
-            elif old_thumb and old_thumb != './assets/images/placeholder.svg':
+            elif old_thumb and old_thumb != '/assets/images/placeholder.svg':
                 e['thumbnail'] = old_thumb
             else:
-                e['thumbnail'] = new_thumb or old_thumb or './assets/images/placeholder.svg'
+                e['thumbnail'] = new_thumb or old_thumb or '/assets/images/placeholder.svg'
             # Preserve tags/date if they already exist (and non-empty)
             if 'tags' in old and old['tags']:
                 e['tags'] = old['tags']

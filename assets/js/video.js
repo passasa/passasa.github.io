@@ -49,7 +49,7 @@
     return;
   }
 
-  fetch('./assets/data/videos.json')
+  fetch('/assets/data/videos.json')
     .then(r => {
       if(!r.ok) throw new Error('Impossible de charger les données');
       return r.json();

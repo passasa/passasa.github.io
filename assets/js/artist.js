@@ -94,8 +94,8 @@
   if(!artistSlug){statusEl.textContent='Paramètre ?artist= manquant';return;}
 
   Promise.all([
-    fetch('./assets/data/videos.json').then(r=>{if(!r.ok) throw new Error('Chargement JSON impossible'); return r.json();}),
-    fetch('./assets/data/creators.json').then(r=>{if(!r.ok) throw new Error('Chargement creators impossible'); return r.json();})
+    fetch('/assets/data/videos.json').then(r=>{if(!r.ok) throw new Error('Chargement JSON impossible'); return r.json();}),
+    fetch('/assets/data/creators.json').then(r=>{if(!r.ok) throw new Error('Chargement creators impossible'); return r.json();})
   ])
   .then(([list, creatorsMap]) => {
     // Collect videos for this artist and sort Z -> A by normalized title
