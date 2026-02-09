@@ -133,30 +133,37 @@ def main():
     # Build creators -> thumbnail mapping (creator covers live in `assets/images/`)
     creators_map = {}
     images_root = os.path.join(os.path.dirname(__file__), 'assets', 'images')
-    # For each top-level creator folder in CONTENT_DIR, compute its slug and look
-    # for an image in `assets/images/` whose slugified basename matches.
+    
+    def find_thumb_for_slug(slug: str) -> str:
+        """Search for an image in assets/images/ whose slugified basename matches the given slug."""
+        if not os.path.isdir(images_root):
+            return '/assets/images/placeholder.svg'
+        for existing_file in os.listdir(images_root):
+            name_wo_ext = re.sub(r'\.[^.]+$', '', existing_file)
+            if slugify(name_wo_ext) == slug:
+                return f"/assets/images/{existing_file}"
+        return '/assets/images/placeholder.svg'
+    
+    # Recursively walk all creator folders (including nested ones) to build creators_map
     if os.path.isdir(CONTENT_DIR):
-        for creator in sorted(os.listdir(CONTENT_DIR)):
-            c_path = os.path.join(CONTENT_DIR, creator)
-            if not os.path.isdir(c_path):
-                continue
-            slug = slugify(creator)
-            thumb = None
-            if os.path.isdir(images_root):
-                for existing_file in os.listdir(images_root):
-                    # compare slugified basename to creator slug (case-insensitive)
-                    name_wo_ext = re.sub(r'\.[^.]+$', '', existing_file)
-                    if slugify(name_wo_ext) == slug:
-                        thumb = f"/assets/images/{existing_file}"
-                        break
-            if not thumb:
-                thumb = '/assets/images/placeholder.svg'
-            creators_map[slug] = thumb
+        def process_creators_recursive(dirpath: str, parent_slug: str = None):
+            """Recursively process creator folders and add to creators_map."""
+            for creator in sorted(os.listdir(dirpath)):
+                c_path = os.path.join(dirpath, creator)
+                if not os.path.isdir(c_path):
+                    continue
+                slug = slugify(creator)
+                if parent_slug:
+                    slug = f"{parent_slug}-{slug}"
+                thumb = find_thumb_for_slug(slug)
+                creators_map[slug] = thumb
+                # Recursively process subfolders
+                process_creators_recursive(c_path, slug)
+        
+        process_creators_recursive(CONTENT_DIR)
     else:
-        # assets/images not present, fallback all creators to placeholder
-        for creator in sorted(os.listdir(CONTENT_DIR)) if os.path.isdir(CONTENT_DIR) else []:
-            slug = slugify(creator)
-            creators_map[slug] = '/assets/images/placeholder.svg'
+        # content dir not present, no creators to map
+        pass
     # Optional: merge with existing if present (preserve manual metadata)
     existing = []
     if os.path.isfile(OUTPUT_JSON):
