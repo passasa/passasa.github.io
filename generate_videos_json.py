@@ -157,9 +157,12 @@ def main():
         thumb = None
         for base in candidates:
             for ext in ('webp','jpg','jpeg','png'):
-                candidate = os.path.join(images_root, f"{base}.{ext}")
-                if os.path.isfile(candidate):
-                    thumb = f"/assets/images/{base}.{ext}"
+                # Case-insensitive file search
+                for existing_file in os.listdir(images_root):
+                    if existing_file.lower() == f"{base}.{ext}".lower():
+                        thumb = f"/assets/images/{existing_file}"
+                        break
+                if thumb:
                     break
             if thumb:
                 break
