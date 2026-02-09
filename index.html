@@ -8,6 +8,81 @@
     <link rel="shorcut icon" href="/assets/images/Logo-Head.webp">
     <link href="/assets/others/Style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Force responsive fixes */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Mobile first */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100% !important;
+                padding: 0 8px !important;
+                margin: 0 auto !important;
+            }
+            
+            .jumbotron {
+                padding: 1.5rem 1rem !important;
+                margin: 0.8rem 0 !important;
+            }
+            
+            .jumbotron .display-4 {
+                font-size: 22px !important;
+                line-height: 1.2 !important;
+            }
+            
+            .jumbotron .lead {
+                font-size: 14px !important;
+                margin: 0.5rem 0 !important;
+            }
+            
+            .btn-warning {
+                padding: 6px 16px !important;
+                font-size: 11px !important;
+                margin-top: 1rem !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            html {
+                font-size: 14px !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                padding: 0 6px !important;
+                margin: 0 auto !important;
+                width: 100% !important;
+            }
+            
+            .jumbotron {
+                padding: 1rem 0.8rem !important;
+                margin: 0.6rem 0 !important;
+            }
+            
+            .jumbotron .display-4 {
+                font-size: 18px !important;
+                line-height: 1.1 !important;
+            }
+            
+            .jumbotron .lead {
+                font-size: 12px !important;
+                line-height: 1.3 !important;
+            }
+            
+            .btn-warning {
+                padding: 5px 12px !important;
+                font-size: 10px !important;
+            }
+        }
+    </style>
 </head>
 <body class="bg-dark text-light">
     <!--Barre de navigation-->

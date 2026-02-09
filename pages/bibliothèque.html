@@ -9,39 +9,222 @@
     <link href="/assets/others/Style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {background: #000; color: #fff; min-height: 100vh; font-family: 'Roboto', sans-serif;}
-        .page-header {max-width: 1200px; margin: 2rem auto 1.5rem; padding: 0 1rem; text-align: center;}
-        .page-header h1 {font-size: 36px; font-weight: 700; color: #fff; margin-bottom: .5rem;}
-        .page-header h1 span {color: #ff9000;}
-        .page-header p {color: #999; font-size: 15px; max-width: 600px; margin: 0 auto;}
-        #searchBar {max-width: 1200px; margin: 0 auto 2rem; padding: 0 1rem;}
-        #searchBar input {width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 14px 20px; border-radius: 6px; font-size: 15px; transition: all 0.2s;}
-        #searchBar input:focus {outline: none; border-color: #ff9000; box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);}
-        #searchBar input::placeholder {color: #666;}
-        #creatorsGrid {max-width: 1200px; margin: 0 auto 4rem; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;}
-        /* Each group (parent + its children) should occupy a full row so children appear under the parent */
-        /* regular grid for creator cards */
-        .creator-card {background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; text-decoration: none; display: flex; flex-direction: column; position: relative; max-width: 100%;}
-        .creator-card:hover {border-color: #ff9000; transform: translateY(-6px); box-shadow: 0 12px 32px rgba(255, 144, 0, 0.25);}
-        .creator-card::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #ff9000; transform: scaleX(0); transition: transform 0.3s;}
-        .creator-card:hover::before {transform: scaleX(1);}
-        .creator-img {width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;}
-        .creator-info {padding: 20px;}
-        .creator-name {font-size: 20px; font-weight: 700; color: #fff; margin: 0 0 8px;}
-        .creator-stats {font-size: 13px; color: #999; margin: 0;}
-        .creator-stats strong {color: #ff9000; font-weight: 600;}
-        .creator-date {color: #666; font-size: 11px; margin-top: 4px; display: block;}
-        .no-results {text-align: center; color: #666; padding: 3rem 1rem; font-size: 16px;}
-        @media (max-width: 700px) {
-            .page-header h1 {font-size: 28px;}
-            #creatorsGrid {grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px;}
-            .creator-name {font-size: 16px;}
-            .creator-info {padding: 14px;}
+        * { box-sizing: border-box; }
+        
+        body {
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page-header {
+            max-width: 100%;
+            margin: 2rem auto 1.5rem;
+            padding: 0 1rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: .5rem;
+        }
+        
+        .page-header h1 span { color: #ff9000; }
+        
+        .page-header p {
+            color: #999;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        #searchBar {
+            max-width: 100%;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+            width: 100%;
+        }
+        
+        #searchBar input {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        #searchBar input:focus {
+            outline: none;
+            border-color: #ff9000;
+            box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);
+        }
+        
+        #searchBar input::placeholder { color: #666; }
+        
+        #creatorsGrid {
+            max-width: 100%;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            width: 100%;
+        }
+        
+        .creator-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            max-width: 100%;
+        }
+        
+        .creator-card:hover {
+            border-color: #ff9000;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(255, 144, 0, 0.25);
+        }
+        
+        .creator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ff9000;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .creator-card:hover::before { transform: scaleX(1); }
+        
+        .creator-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .creator-info {
+            padding: 20px;
+        }
+        
+        .creator-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 8px;
+        }
+        
+        .creator-stats {
+            font-size: 13px;
+            color: #999;
+            margin: 0;
+        }
+        
+        .creator-stats strong {
+            color: #ff9000;
+            font-weight: 600;
+        }
+        
+        .creator-date {
+            color: #666;
+            font-size: 11px;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: #666;
+            padding: 3rem 1rem;
+            font-size: 16px;
+        }
+        
+        /* Mobile - 1024px and below */
+        @media (max-width: 1024px) {
+            .page-header h1 { font-size: 32px; }
+            .page-header p { font-size: 14px; }
+            #creatorsGrid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 0 0.75rem; max-width: 100% !important; }
+            #searchBar { padding: 0 0.75rem; }
+            .creator-name { font-size: 18px; }
+            .creator-info { padding: 16px; }
+        }
+        
+        /* Mobile - 768px and below */
+        @media (max-width: 768px) {
+            body { overflow-x: hidden !important; }
+            .page-header { margin: 1.5rem auto 1rem; padding: 0 0.75rem !important; max-width: 100% !important; }
+            .page-header h1 { font-size: 28px; margin-bottom: 0.3rem; }
+            .page-header p { font-size: 13px; }
+            #searchBar { margin: 0 auto 1.5rem; padding: 0 0.75rem !important; max-width: 100% !important; }
+            #searchBar input { padding: 11px 16px; font-size: 14px; border-radius: 5px; }
+            #creatorsGrid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding: 0 0.5rem !important; margin-bottom: 2rem; max-width: 100% !important; }
+            .creator-img { aspect-ratio: 3/4; }
+            .creator-info { padding: 12px; }
+            .creator-name { font-size: 14px; margin-bottom: 6px; }
+            .creator-stats { font-size: 12px; }
+            .creator-date { font-size: 10px; }
+            .no-results { padding: 2rem 1rem; font-size: 14px; }
+        }
+        
+        /* Mobile - 600px and below */
+        @media (max-width: 600px) {
+            body { overflow-x: hidden !important; }
+            .page-header { margin: 1rem auto 0.75rem; padding: 0 0.5rem !important; max-width: 100% !important; }
+            .page-header h1 { font-size: 22px; margin-bottom: 0.2rem; }
+            .page-header p { font-size: 12px; line-height: 1.4; }
+            #searchBar { margin: 0 auto 1rem; padding: 0 0.5rem !important; max-width: 100% !important; }
+            #searchBar input { padding: 9px 12px; font-size: 13px; border-radius: 4px; }
+            #creatorsGrid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; padding: 0 0.25rem !important; margin-bottom: 1.5rem; max-width: 100% !important; }
+            .creator-img { aspect-ratio: 3/4; }
+            .creator-info { padding: 10px; }
+            .creator-name { font-size: 12px; margin-bottom: 4px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+            .creator-stats { font-size: 10px; }
+            .creator-date { font-size: 9px; margin-top: 2px; }
+            .no-results { padding: 1.5rem 0.75rem; font-size: 12px; }
+        }
+        
+        /* Mobile - 480px and below */
+        @media (max-width: 480px) {
+            html { font-size: 14px !important; }
+            body { overflow-x: hidden !important; }
+            .page-header { margin: 0.75rem auto 0.5rem; padding: 0 0.25rem !important; max-width: 100% !important; }
+            .page-header h1 { font-size: 18px; margin-bottom: 0.1rem; }
+            .page-header p { font-size: 11px; line-height: 1.3; }
+            #searchBar { margin: 0 auto 0.75rem; padding: 0 0.25rem !important; max-width: 100% !important; }
+            #searchBar input { padding: 8px 10px; font-size: 12px; border-radius: 3px; }
+            #creatorsGrid { grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 8px; padding: 0 !important; margin-bottom: 1rem; max-width: 100% !important; }
+            .creator-card { border-radius: 4px; border: none; }
+            .creator-img { aspect-ratio: 1/1; }
+            .creator-info { padding: 8px; }
+            .creator-name { font-size: 10px; margin-bottom: 2px; -webkit-line-clamp: 1; }
+            .creator-stats { font-size: 9px; }
+            .creator-date { font-size: 8px; margin-top: 1px; }
+            .no-results { padding: 1rem 0.5rem; font-size: 11px; }
         }
     </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body style="width: 100%; max-width: 100%; margin: 0; padding: 0; overflow-x: hidden;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="width: 100%; max-width: 100%;">
         <a class="navbar-brand">Gentle <span style="color:#ff9000">Leak</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
