@@ -75,30 +75,29 @@ def build_entries():
                 # Basic validation: month/day ranges
                 if '01' <= m <= '12' and '01' <= d <= '31':
                     detected_date = f"{y}-{m}-{d}"
-            # Thumbnail discovery for VIDEO entries (videos thumbnails should come
-            # from assets/images/videos first, then fallback to colocated in content):
-            # 1. image in assets/images/videos/<creator_slug>/<image>
-            # 2. image colocated with the .txt file in the creator's folder -> /content/<rel-folder>/<image>
-            # 3. fallback placeholder
+            # Thumbnail discovery for VIDEO entries:
+            # Prefer images colocated with the .txt file inside `content/` (user expects
+            # video thumbnails to live in `content/`). If not present, fall back to
+            # `assets/images/videos/<creator_slug>/` (rare) and finally to placeholder.
             thumb_rel = None
-            
-            # First, check dedicated assets/images/videos/<creator_slug>/ folder (GitHub Pages compatible)
-            thumb_dir = os.path.join(os.path.dirname(__file__), 'assets', 'images', 'videos', creator_slug)
-            if os.path.isdir(thumb_dir):
-                for ext in ('webp', 'jpg', 'jpeg', 'png'):
-                    candidate = os.path.join(thumb_dir, f"{title_raw}.{ext}")
-                    if os.path.isfile(candidate):
-                        thumb_rel = f"{THUMB_ROOT}/{creator_slug}/{title_raw}.{ext}"
-                        break
 
-            # If not found in assets, check colocated with the .txt file in the creator's folder
+            # 1) Check colocated with the .txt file in the creator's folder (primary)
+            rel_folder = os.path.relpath(c_path, CONTENT_DIR).replace('\\', '/')
+            for ext in ('webp', 'jpg', 'jpeg', 'png'):
+                colocated = os.path.join(c_path, f"{title_raw}.{ext}")
+                if os.path.isfile(colocated):
+                    thumb_rel = f"/content/{rel_folder}/{title_raw}.{ext}"
+                    break
+
+            # 2) If not found in content, check assets/images/videos/<creator_slug>/ as fallback
             if thumb_rel is None:
-                rel_folder = os.path.relpath(c_path, CONTENT_DIR).replace('\\', '/')
-                for ext in ('webp', 'jpg', 'jpeg', 'png'):
-                    colocated = os.path.join(c_path, f"{title_raw}.{ext}")
-                    if os.path.isfile(colocated):
-                        thumb_rel = f"/content/{rel_folder}/{title_raw}.{ext}"
-                        break
+                thumb_dir = os.path.join(os.path.dirname(__file__), 'assets', 'images', 'videos', creator_slug)
+                if os.path.isdir(thumb_dir):
+                    for ext in ('webp', 'jpg', 'jpeg', 'png'):
+                        candidate = os.path.join(thumb_dir, f"{title_raw}.{ext}")
+                        if os.path.isfile(candidate):
+                            thumb_rel = f"{THUMB_ROOT}/{creator_slug}/{title_raw}.{ext}"
+                            break
 
             # Final fallback is the site placeholder
             if thumb_rel is None:
@@ -131,44 +130,33 @@ def build_entries():
 
 def main():
     entries = build_entries()
-    # Build creators -> thumbnail mapping (folders use images from /assets/images)
+    # Build creators -> thumbnail mapping (creator covers live in `assets/images/`)
     creators_map = {}
     images_root = os.path.join(os.path.dirname(__file__), 'assets', 'images')
-    # Walk content folders to discover folder slugs
-    for dirpath, dirnames, filenames in os.walk(CONTENT_DIR):
-        # compute slug based on path relative to CONTENT_DIR
-        rel = os.path.relpath(dirpath, CONTENT_DIR)
-        if rel == '.':
-            continue
-        parts = rel.split(os.sep)
-        slug_parts = [slugify(p) for p in parts]
-        slug = '-'.join(slug_parts)
-        # candidate bases: full slug, last part, capitalized last part, underscore variant
-        last = slug_parts[-1] if slug_parts else slug
-        cand_bases = [slug, last, '-'.join([p.capitalize() for p in re.sub(r'[^a-z0-9-]', ' ', last).split()]), last.replace('-', '_')]
-        # Add singular variants (remove trailing 's' if present)
-        for b in list(cand_bases):
-            if b.endswith('s') and len(b) > 1:
-                cand_bases.append(b[:-1])
-        seen = set(); candidates = []
-        for b in cand_bases:
-            if not b or b in seen: continue
-            seen.add(b); candidates.append(b)
-        thumb = None
-        for base in candidates:
-            for ext in ('webp','jpg','jpeg','png'):
-                # Case-insensitive file search
+    # For each top-level creator folder in CONTENT_DIR, compute its slug and look
+    # for an image in `assets/images/` whose slugified basename matches.
+    if os.path.isdir(CONTENT_DIR):
+        for creator in sorted(os.listdir(CONTENT_DIR)):
+            c_path = os.path.join(CONTENT_DIR, creator)
+            if not os.path.isdir(c_path):
+                continue
+            slug = slugify(creator)
+            thumb = None
+            if os.path.isdir(images_root):
                 for existing_file in os.listdir(images_root):
-                    if existing_file.lower() == f"{base}.{ext}".lower():
+                    # compare slugified basename to creator slug (case-insensitive)
+                    name_wo_ext = re.sub(r'\.[^.]+$', '', existing_file)
+                    if slugify(name_wo_ext) == slug:
                         thumb = f"/assets/images/{existing_file}"
                         break
-                if thumb:
-                    break
-            if thumb:
-                break
-        if not thumb:
-            thumb = '/assets/images/placeholder.svg'
-        creators_map[slug] = thumb
+            if not thumb:
+                thumb = '/assets/images/placeholder.svg'
+            creators_map[slug] = thumb
+    else:
+        # assets/images not present, fallback all creators to placeholder
+        for creator in sorted(os.listdir(CONTENT_DIR)) if os.path.isdir(CONTENT_DIR) else []:
+            slug = slugify(creator)
+            creators_map[slug] = '/assets/images/placeholder.svg'
     # Optional: merge with existing if present (preserve manual metadata)
     existing = []
     if os.path.isfile(OUTPUT_JSON):
