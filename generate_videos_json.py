@@ -76,28 +76,29 @@ def build_entries():
                 if '01' <= m <= '12' and '01' <= d <= '31':
                     detected_date = f"{y}-{m}-{d}"
             # Thumbnail discovery for VIDEO entries (videos thumbnails should come
-            # from the same folder as the video when available):
-            # 1. image colocated with the .txt file in the creator's folder -> /content/<rel-folder>/<image>
-            # 2. image in assets/images/videos/<creator_slug>/<image>
+            # from assets/images/videos first, then fallback to colocated in content):
+            # 1. image in assets/images/videos/<creator_slug>/<image>
+            # 2. image colocated with the .txt file in the creator's folder -> /content/<rel-folder>/<image>
             # 3. fallback placeholder
             thumb_rel = None
-            # relative folder path under /content (preserve nested structure)
-            rel_folder = os.path.relpath(c_path, CONTENT_DIR).replace('\\', '/')
-            for ext in ('webp', 'jpg', 'jpeg', 'png'):
-                colocated = os.path.join(c_path, f"{title_raw}.{ext}")
-                if os.path.isfile(colocated):
-                    thumb_rel = f"/content/{rel_folder}/{title_raw}.{ext}"
-                    break
+            
+            # First, check dedicated assets/images/videos/<creator_slug>/ folder (GitHub Pages compatible)
+            thumb_dir = os.path.join(os.path.dirname(__file__), 'assets', 'images', 'videos', creator_slug)
+            if os.path.isdir(thumb_dir):
+                for ext in ('webp', 'jpg', 'jpeg', 'png'):
+                    candidate = os.path.join(thumb_dir, f"{title_raw}.{ext}")
+                    if os.path.isfile(candidate):
+                        thumb_rel = f"{THUMB_ROOT}/{creator_slug}/{title_raw}.{ext}"
+                        break
 
-            # If not found colocated, check a dedicated assets/images/videos/<creator_slug>/ folder
+            # If not found in assets, check colocated with the .txt file in the creator's folder
             if thumb_rel is None:
-                thumb_dir = os.path.join(os.path.dirname(__file__), 'assets', 'images', 'videos', creator_slug)
-                if os.path.isdir(thumb_dir):
-                    for ext in ('webp', 'jpg', 'jpeg', 'png'):
-                        candidate = os.path.join(thumb_dir, f"{title_raw}.{ext}")
-                        if os.path.isfile(candidate):
-                            thumb_rel = f"{THUMB_ROOT}/{creator_slug}/{title_raw}.{ext}"
-                            break
+                rel_folder = os.path.relpath(c_path, CONTENT_DIR).replace('\\', '/')
+                for ext in ('webp', 'jpg', 'jpeg', 'png'):
+                    colocated = os.path.join(c_path, f"{title_raw}.{ext}")
+                    if os.path.isfile(colocated):
+                        thumb_rel = f"/content/{rel_folder}/{title_raw}.{ext}"
+                        break
 
             # Final fallback is the site placeholder
             if thumb_rel is None:
