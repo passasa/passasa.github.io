@@ -176,16 +176,41 @@
       searchInput.addEventListener('input',()=>{
         const q=searchInput.value.toLowerCase().trim();
         if(q===lastQuery) return; lastQuery=q;
-        if(!q){render(artistVideos);return;}
+        if(!q){
+          // If no query, show original content
+          if(childSlugs.length>0 && artistVideos.length===0){
+            renderChildrenAsCategories();
+          } else {
+            render(artistVideos);
+          }
+          return;
+        }
+        // Search in direct videos AND child videos
         const filtered = artistVideos.filter(v=> normTitle(v.title).includes(q));
-        render(filtered);
+        const filteredChildVideos = childVideos.filter(v=> normTitle(v.title).includes(q));
+        const allFiltered = [...filtered, ...filteredChildVideos];
+        
+        if(allFiltered.length > 0){
+          render(allFiltered);
+        } else {
+          gridEl.innerHTML='<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #999;">Aucun résultat pour "' + escapeHtml(q) + '"</div>';
+        }
       });
 
       sortSelect.addEventListener('change',()=>{
         const q = searchInput.value.trim().toLowerCase();
-        if(!q){render(artistVideos);return;}
+        if(!q){
+          if(childSlugs.length>0 && artistVideos.length===0){
+            renderChildrenAsCategories();
+          } else {
+            render(artistVideos);
+          }
+          return;
+        }
         const filtered = artistVideos.filter(v=> normTitle(v.title).includes(q));
-        render(filtered);
+        const filteredChildVideos = childVideos.filter(v=> normTitle(v.title).includes(q));
+        const allFiltered = [...filtered, ...filteredChildVideos];
+        render(allFiltered);
       });
     })
     .catch(e=>{statusEl.textContent='Erreur: '+e.message;});

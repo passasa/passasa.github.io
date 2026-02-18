@@ -75,6 +75,19 @@ iframe {
     background-color: #000000 !important;
     border-bottom: 2px solid #1a1a1a;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    padding: 0.5rem 0 !important;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.4rem 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.3rem 0 !important;
+    }
 }
 
 .navbar-brand {
@@ -83,6 +96,18 @@ iframe {
     color: #ffffff !important;
     letter-spacing: -0.5px;
     text-transform: none;
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand {
+        font-size: 16px;
+    }
 }
 
 .navbar-brand span {
@@ -95,6 +120,20 @@ iframe {
     font-size: 15px;
     padding: 8px 16px;
     transition: color 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav .nav-item .nav-link {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-nav .nav-item .nav-link {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
 }
 
 .navbar-nav .nav-item .nav-link:hover {

@@ -2,9 +2,16 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Bibliothèque | Gentle Leak</title>
-    <link rel="shortcut icon" href="/assets/images/Logo-Head.webp">
+    <style>
+      * { box-sizing: border-box; }
+      html, body { width: 100%; max-width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+    </style>
+    <link rel="shortcut icon" href="/assets/images/logo-head.webp">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/others/Style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -31,11 +38,38 @@
             width: 100%;
         }
         
+        /* Responsive header */
+        @media (max-width: 768px) {
+            .page-header {
+                margin: 1.5rem auto 1rem;
+                padding: 0 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header {
+                margin: 1rem auto 0.75rem;
+                padding: 0 0.5rem;
+            }
+        }
+        
         .page-header h1 {
             font-size: 36px;
             font-weight: 700;
             color: #fff;
             margin-bottom: .5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 26px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 20px;
+            }
         }
         
         .page-header h1 span { color: #ff9000; }
@@ -47,11 +81,37 @@
             margin: 0 auto;
         }
         
+        @media (max-width: 768px) {
+            .page-header p {
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header p {
+                font-size: 12px;
+            }
+        }
+        
         #searchBar {
             max-width: 100%;
             margin: 0 auto 2rem;
             padding: 0 1rem;
             width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            #searchBar {
+                margin: 0 auto 1.5rem;
+                padding: 0 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #searchBar {
+                margin: 0 auto 1rem;
+                padding: 0 0.5rem;
+            }
         }
         
         #searchBar input {
@@ -63,6 +123,20 @@
             border-radius: 6px;
             font-size: 15px;
             transition: all 0.2s;
+        }
+        
+        @media (max-width: 768px) {
+            #searchBar input {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #searchBar input {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
         }
         
         #searchBar input:focus {
@@ -83,6 +157,24 @@
             width: 100%;
         }
         
+        @media (max-width: 768px) {
+            #creatorsGrid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+                padding: 0 0.75rem;
+                margin: 0 auto 3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #creatorsGrid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 0 0.5rem;
+                margin: 0 auto 2rem;
+            }
+        }
+        
         .creator-card {
             background: #1a1a1a;
             border: 1px solid #2a2a2a;
@@ -100,6 +192,20 @@
             border-color: #ff9000;
             transform: translateY(-6px);
             box-shadow: 0 12px 32px rgba(255, 144, 0, 0.25);
+        }
+        
+        @media (max-width: 768px) {
+            .creator-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 20px rgba(255, 144, 0, 0.2);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .creator-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(255, 144, 0, 0.15);
+            }
         }
         
         .creator-card::before {
@@ -127,6 +233,18 @@
             padding: 20px;
         }
         
+        @media (max-width: 768px) {
+            .creator-info {
+                padding: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .creator-info {
+                padding: 10px;
+            }
+        }
+        
         .creator-name {
             font-size: 20px;
             font-weight: 700;
@@ -134,10 +252,36 @@
             margin: 0 0 8px;
         }
         
+        @media (max-width: 768px) {
+            .creator-name {
+                font-size: 16px;
+                margin: 0 0 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .creator-name {
+                font-size: 14px;
+                margin: 0 0 4px;
+            }
+        }
+        
         .creator-stats {
             font-size: 13px;
             color: #999;
             margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .creator-stats {
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .creator-stats {
+                font-size: 11px;
+            }
         }
         
         .creator-stats strong {
@@ -152,11 +296,39 @@
             display: block;
         }
         
+        @media (max-width: 768px) {
+            .creator-date {
+                font-size: 10px;
+                margin-top: 2px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .creator-date {
+                font-size: 9px;
+                margin-top: 2px;
+            }
+        }
+        
         .no-results {
             text-align: center;
             color: #666;
             padding: 3rem 1rem;
             font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .no-results {
+                padding: 2rem 1rem;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .no-results {
+                padding: 1.5rem 0.75rem;
+                font-size: 13px;
+            }
         }
         
         /* Mobile - 1024px and below */
@@ -298,7 +470,7 @@
                 }
             });
             
-            const parentNames = {'mofos': 'MOFOS'};
+            const parentNames = {'mofos': 'MOFOS', 'nubiles-porn': 'Nubiles Porn'};
             const allSlugs = Object.keys(artistMap);
             const childrenSlugs = new Set();
             const parentsByPrefix = {};
@@ -310,8 +482,8 @@
                 // Try progressively simpler parents
                 for (let i = parts.length - 1; i > 0; i--) {
                     const potentialParent = parts.slice(0, i).join('-');
-                    // Check if parent exists OR is "mofos" (special case: create virtual parent)
-                    if (artistMap[potentialParent] || potentialParent === 'mofos') {
+                    // Check if parent exists in videos OR is a known parent in parentNames
+                    if (artistMap[potentialParent] || potentialParent in parentNames) {
                         if (!parentsByPrefix[potentialParent]) {
                             parentsByPrefix[potentialParent] = [];
                         }
@@ -368,11 +540,44 @@
                     render(allCreators);
                     return;
                 }
-                const filtered = allCreators.filter(c =>
-                    normalize(c.name).includes(q) || normalize(c.slug).includes(q) ||
-                    c.children.some(ch => normalize(ch.name).includes(q) || normalize(ch.slug).includes(q))
-                );
-                render(filtered);
+                
+                // Collect creators that match directly
+                const directMatches = new Set();
+                // Collect child creators that match
+                const childMatches = new Set();
+                
+                for (const creator of allCreators) {
+                    if (normalize(creator.name).includes(q) || normalize(creator.slug).includes(q)) {
+                        directMatches.add(creator.slug);
+                    }
+                    
+                    for (const child of creator.children) {
+                        if (normalize(child.name).includes(q) || normalize(child.slug).includes(q)) {
+                            childMatches.add(child.slug);
+                        }
+                    }
+                }
+                
+                // If we have child matches, render them as cards (without a parent)
+                const results = [];
+                
+                // Add direct parent matches
+                for (const creator of allCreators) {
+                    if (directMatches.has(creator.slug)) {
+                        results.push(creator);
+                    }
+                }
+                
+                // Add child matches as standalone cards
+                for (const creator of allCreators) {
+                    for (const child of creator.children) {
+                        if (childMatches.has(child.slug)) {
+                            results.push(child);
+                        }
+                    }
+                }
+                
+                render(results);
             });
         })
         .catch(e => {

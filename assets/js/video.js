@@ -8,6 +8,8 @@
   const linkEl = document.getElementById('videoLink');
   const metaEl = document.getElementById('videoMeta');
   const relatedEl = document.getElementById('related');
+  const turboContainerEl = document.getElementById('turboContainer');
+  const turboEmbedEl = document.getElementById('turboEmbed');
 
   function escapeHtml(str){
     return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[s]));
@@ -65,6 +67,23 @@
       thumbnailEl.src = video.thumbnail;
       thumbnailEl.alt = video.title;
       linkEl.href = video.iframe;
+      
+      // If Turbo embed exists, show it but keep thumbnail and link hidden initially
+      if(video.embed_url){
+        turboEmbedEl.src = video.embed_url;
+        turboContainerEl.style.display = 'block';
+        thumbnailEl.style.display = 'none';
+        // Keep the Fileditch button visible below the embed as fallback
+        linkEl.style.display = 'block';
+        linkEl.textContent = '⬇ Voir sur Fileditch (secours)';
+      } else {
+        // No Turbo embed, show thumbnail and link to Fileditch
+        turboContainerEl.style.display = 'none';
+        thumbnailEl.style.display = 'block';
+        linkEl.style.display = 'block';
+        linkEl.textContent = '▶ Voir la vidéo sur Fileditch';
+      }
+      
       metaEl.innerHTML = `Artiste: <strong>${escapeHtml(video.artist)}</strong><br>Date: ${escapeHtml(video.date)}<br>Tags: ${video.tags.map(t=>`<span class='tag'>${escapeHtml(t)}</span>`).join(' ')}`;
 
       // Related videos (same artist, different id) sorted by date (newest first), then title Z->A

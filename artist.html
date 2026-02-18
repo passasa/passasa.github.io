@@ -2,9 +2,16 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Artiste | Gentle Leak</title>
-  <link rel="shortcut icon" href="/assets/images/Logo-Head.webp" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+  </style>
+  <link rel="shortcut icon" href="/assets/images/logo-head.webp" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/assets/others/Style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -21,18 +28,19 @@
       padding: 0;
     }
     
+    /* === MOBILE FIRST (par défaut pour petit écran) === */
     .artist-header {
       max-width: 100%;
-      margin: 2rem 0 0;
-      padding: 0 1rem;
+      margin: 0.8rem 0 0;
+      padding: 0 0.5rem;
       width: 100%;
     }
     
     .artist-header h1 {
-      font-size: 32px;
+      font-size: 20px;
       font-weight: 700;
       color: #fff;
-      margin: 0 0 .5rem;
+      margin: 0 0 0.3rem;
       letter-spacing: -0.5px;
     }
     
@@ -40,18 +48,18 @@
     
     .artist-header p {
       color: #999;
-      font-size: 14px;
-      margin: 0 0 1.5rem;
+      font-size: 12px;
+      margin: 0 0 0.8rem;
       font-weight: 500;
     }
     
     #videosGrid {
       max-width: 100%;
-      margin: 0 auto 3rem;
-      padding: 0 1rem;
+      margin: 0 auto 1.5rem;
+      padding: 0 0.25rem;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       width: 100%;
     }
     
@@ -61,7 +69,7 @@
       color: #fff;
       background: #1a1a1a;
       border: 1px solid #2a2a2a;
-      border-radius: 6px;
+      border-radius: 4px;
       overflow: hidden;
       transition: all 0.3s ease;
       position: relative;
@@ -69,8 +77,8 @@
     
     .video-card:hover {
       border-color: #ff9000;
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(255, 144, 0, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 144, 0, 0.15);
     }
     
     .video-card::before {
@@ -79,7 +87,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 2px;
       background: #ff9000;
       transform: scaleX(0);
       transition: transform 0.3s;
@@ -90,45 +98,52 @@
     .video-card img {
       display: block;
       width: 100%;
-      aspect-ratio: 16/9;
+      aspect-ratio: 16/10;
       object-fit: cover;
       border-radius: 0;
       margin-bottom: 0;
       transition: transform 0.3s;
     }
     
-    .video-card:hover img { transform: scale(1.05); }
+    .video-card:hover img { transform: scale(1.02); }
     
     .video-card h3 {
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 600;
-      margin: 12px 12px 6px;
+      margin: 6px 6px 2px;
       color: #fff;
-      line-height: 1.4;
+      line-height: 1.1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
     
     .video-card .meta {
-      font-size: 12px;
+      font-size: 10px;
       color: #999;
-      padding: 0 12px 12px;
+      padding: 0 6px 6px;
       font-weight: 400;
     }
     
     #status {
       max-width: 100%;
-      margin: 2rem auto;
+      margin: 1rem auto;
       text-align: center;
       color: #666;
       width: 100%;
+      font-size: 13px;
     }
     
     #searchWrap {
       max-width: 100%;
-      margin: 0 auto 1.5rem;
-      padding: 0 1rem;
+      margin: 0 auto 0.8rem;
+      padding: 0 0.5rem;
       display: flex;
-      gap: .75rem;
+      gap: 0.4rem;
       flex-wrap: wrap;
+      flex-direction: column;
       width: 100%;
     }
     
@@ -137,11 +152,11 @@
       background: #1a1a1a;
       border: 1px solid #2a2a2a;
       color: #fff;
-      padding: 12px 16px;
-      border-radius: 6px;
-      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 12px;
       transition: all 0.2s;
-      min-width: 150px;
+      width: 100%;
     }
     
     #searchWrap input:focus {
@@ -156,10 +171,10 @@
       background: #1a1a1a;
       border: 1px solid #2a2a2a;
       color: #fff;
-      padding: 12px 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      min-width: 190px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      width: 100%;
       transition: all 0.2s;
     }
     
@@ -169,61 +184,142 @@
       box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);
     }
     
-    /* Mobile - 900px and below */
-    @media (max-width: 900px) {
-      .artist-header h1 { font-size: 28px; }
-      #videosGrid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; padding: 0 0.75rem; }
-      .artist-header { padding: 0 0.75rem; }
-      #searchWrap { padding: 0 0.75rem; gap: 0.5rem; }
+    /* === TABLETTE (600px+) === */
+    @media (min-width: 600px) {
+      .artist-header {
+        margin: 1.2rem 0 0;
+        padding: 0 0.75rem;
+      }
+      
+      .artist-header h1 {
+        font-size: 22px;
+      }
+      
+      .artist-header p {
+        font-size: 13px;
+        margin: 0 0 1rem;
+      }
+      
+      #videosGrid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        padding: 0 0.5rem;
+        margin: 0 auto 2rem;
+      }
+      
+      .video-card h3 {
+        font-size: 12px;
+        margin: 8px 8px 4px;
+      }
+      
+      .video-card .meta {
+        font-size: 11px;
+        padding: 0 8px 8px;
+      }
+      
+      #searchWrap {
+        flex-direction: row;
+        padding: 0 0.75rem;
+        gap: 0.5rem;
+        margin: 0 auto 1.2rem;
+      }
+      
+      #searchWrap input {
+        padding: 10px 12px;
+        font-size: 13px;
+        min-width: 200px;
+        width: auto;
+        flex: 1;
+      }
+      
+      #searchWrap select {
+        padding: 10px 12px;
+        font-size: 13px;
+        width: auto;
+        min-width: 180px;
+      }
     }
     
-    /* Mobile - 768px and below */
-    @media (max-width: 768px) {
-      body { overflow-x: hidden !important; }
-      .artist-header { margin: 1.5rem 0 0; padding: 0 0.75rem !important; max-width: 100% !important; }
-      .artist-header h1 { font-size: 24px; margin: 0 0 0.3rem; }
-      .artist-header p { font-size: 13px; margin: 0 0 1rem; }
-      #videosGrid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; padding: 0 0.5rem !important; margin-bottom: 2rem; max-width: 100% !important; }
-      .video-card { border-radius: 5px; }
-      .video-card img { aspect-ratio: 16/10; }
-      .video-card h3 { font-size: 12px; margin: 8px 8px 4px; line-height: 1.3; }
-      .video-card .meta { font-size: 10px; padding: 0 8px 8px; }
-      #searchWrap { flex-direction: column; padding: 0 0.5rem !important; gap: 0.5rem; margin-bottom: 1rem; max-width: 100% !important; }
-      #searchWrap input { min-width: 100%; padding: 10px 12px; font-size: 13px; }
-      #searchWrap select { min-width: 100%; font-size: 13px; }
-    }
-    
-    /* Mobile - 600px and below */
-    @media (max-width: 600px) {
-      body { overflow-x: hidden !important; }
-      .artist-header { margin: 1rem 0 0; padding: 0 0.5rem !important; max-width: 100% !important; }
-      .artist-header h1 { font-size: 20px; margin: 0 0 0.2rem; }
-      .artist-header p { font-size: 12px; margin: 0 0 0.8rem; }
-      #videosGrid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; padding: 0 0.25rem !important; margin-bottom: 1.5rem; max-width: 100% !important; }
-      .video-card img { aspect-ratio: 1/1; }
-      .video-card h3 { font-size: 11px; margin: 6px 6px 2px; line-height: 1.2; }
-      .video-card .meta { font-size: 9px; padding: 0 6px 6px; }
-      #searchWrap { flex-direction: column; padding: 0 0.25rem !important; gap: 0.4rem; margin-bottom: 0.8rem; max-width: 100% !important; }
-      #searchWrap input { min-width: 100%; padding: 8px 10px; font-size: 12px; }
-      #searchWrap select { min-width: 100%; font-size: 12px; padding: 8px 10px; }
-    }
-    
-    /* Mobile - 480px and below */
-    @media (max-width: 480px) {
-      html { font-size: 14px !important; }
-      body { overflow-x: hidden !important; }
-      .artist-header { margin: 0.8rem 0 0; padding: 0 0.25rem !important; max-width: 100% !important; }
-      .artist-header h1 { font-size: 18px; margin: 0 0 0.1rem; }
-      .artist-header p { font-size: 11px; margin: 0 0 0.6rem; }
-      #videosGrid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; padding: 0 !important; margin-bottom: 1rem; max-width: 100% !important; }
-      .video-card { border-radius: 3px; }
-      .video-card img { aspect-ratio: 1/1; }
-      .video-card h3 { font-size: 10px; margin: 4px 4px 2px; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
-      .video-card .meta { font-size: 8px; padding: 0 4px 4px; }
-      #searchWrap { padding: 0 !important; gap: 0.3rem; margin-bottom: 0.6rem; max-width: 100% !important; }
-      #searchWrap input { padding: 6px 8px; font-size: 11px; }
-      #searchWrap select { font-size: 11px; padding: 6px 8px; }
-      #status { font-size: 12px; }
+    /* === DESKTOP (768px+) === */
+    @media (min-width: 768px) {
+      .artist-header {
+        margin: 1.5rem 0 0;
+        padding: 0 1rem;
+      }
+      
+      .artist-header h1 {
+        font-size: 28px;
+      }
+      
+      .artist-header p {
+        font-size: 14px;
+        margin: 0 0 1.5rem;
+      }
+      
+      #videosGrid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+        padding: 0 1rem;
+        margin: 0 auto 3rem;
+      }
+      
+      .video-card {
+        border-radius: 6px;
+      }
+      
+      .video-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(255, 144, 0, 0.2);
+      }
+      
+      .video-card img {
+        aspect-ratio: 16/9;
+      }
+      
+      .video-card:hover img {
+        transform: scale(1.05);
+      }
+      
+      .video-card h3 {
+        font-size: 14px;
+        margin: 12px 12px 6px;
+        overflow: visible;
+        text-overflow: clip;
+        display: block;
+        -webkit-line-clamp: unset;
+      }
+      
+      .video-card .meta {
+        font-size: 12px;
+        padding: 0 12px 12px;
+      }
+      
+      #status {
+        margin: 2rem auto;
+        font-size: 16px;
+      }
+      
+      #searchWrap {
+        flex-direction: row;
+        padding: 0 1rem;
+        gap: 0.75rem;
+        margin: 0 auto 1.5rem;
+      }
+      
+      #searchWrap input {
+        padding: 12px 16px;
+        font-size: 14px;
+        min-width: 150px;
+        width: auto;
+        flex: 1;
+      }
+      
+      #searchWrap select {
+        padding: 12px 12px;
+        font-size: 14px;
+        min-width: 190px;
+        width: auto;
+      }
     }
   </style>
 </head>
@@ -257,6 +353,8 @@
   </div>
   <div id="videosGrid"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
   <script src="/assets/js/artist.js" defer></script>
 </body>
 </html>

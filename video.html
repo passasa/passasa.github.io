@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vidéo | Gentle Leak</title>
-  <link rel="shortcut icon" href="/assets/images/Logo-Head.webp" />
+  <link rel="shortcut icon" href="/assets/images/logo-head.webp" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/assets/others/Style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -39,6 +39,18 @@
     .video-container {
       text-align: center;
       margin-bottom: 1.5rem;
+    }
+    
+    #turboContainer {
+      margin-bottom: 1.5rem;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+    
+    #turboEmbed {
+      aspect-ratio: 16/9;
+      border: none;
     }
     
     #videoThumbnail {
@@ -212,6 +224,12 @@
     <div id="status" class="text-secondary mb-2">Chargement...</div>
     <h1 id="videoTitle"></h1>
     <div class="video-container">
+      <!-- Turbo embed section (if available) -->
+      <div id="turboContainer" style="display:none; margin-bottom:1.5rem;">
+        <iframe id="turboEmbed" width="100%" style="max-width:100%; border-radius:6px;" allow="autoplay" allowfullscreen></iframe>
+      </div>
+      
+      <!-- Thumbnail + Fileditch link section -->
       <img id="videoThumbnail" src="" alt="" style="width:100%;max-width:600px;border-radius:6px;margin:0 auto 1rem;display:block;">
       <a id="videoLink" class="btn btn-primary" style="display:block;width:fit-content;padding:12px 24px;font-size:16px;font-weight:700;text-decoration:none;background:#ff9000;color:#000;border-radius:6px;transition:all 0.3s ease;margin:0 auto 1.5rem;" target="_blank">
         ▶ Voir la vidéo sur Fileditch
