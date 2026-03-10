@@ -6,6 +6,7 @@
   const titleEl = document.getElementById('videoTitle');
   const thumbnailEl = document.getElementById('videoThumbnail');
   const linkEl = document.getElementById('videoLink');
+  const altLinkEl = document.getElementById('videoAltLink');
   const metaEl = document.getElementById('videoMeta');
   const relatedEl = document.getElementById('related');
   const turboContainerEl = document.getElementById('turboContainer');
@@ -66,22 +67,62 @@
       titleEl.textContent = video.title;
       thumbnailEl.src = video.thumbnail;
       thumbnailEl.alt = video.title;
-      linkEl.href = video.iframe;
+
+      const primaryUrl = video.iframe || '';
+      const secondaryUrl = video.alt_iframe || '';
+      const embedUrl = video.embed_url || '';
+
+      // Lien principal (hébergeur n°1)
+      if (primaryUrl) {
+        linkEl.href = primaryUrl;
+      } else if (embedUrl) {
+        linkEl.href = embedUrl;
+      } else {
+        linkEl.removeAttribute('href');
+      }
       
-      // If Turbo embed exists, show it but keep thumbnail and link hidden initially
-      if(video.embed_url){
-        turboEmbedEl.src = video.embed_url;
+      // Si un embed direct existe (Turbo, etc.), on l'affiche
+      if (embedUrl){
+        turboEmbedEl.src = embedUrl;
         turboContainerEl.style.display = 'block';
         thumbnailEl.style.display = 'none';
-        // Keep the Fileditch button visible below the embed as fallback
-        linkEl.style.display = 'block';
-        linkEl.textContent = '⬇ Voir sur Fileditch (secours)';
+
+        linkEl.style.display = primaryUrl || embedUrl ? 'block' : 'none';
+        if (primaryUrl) {
+          linkEl.textContent = '⬇ Ouvrir la vidéo (hébergeur principal)';
+        } else {
+          linkEl.textContent = '⬇ Ouvrir la vidéo dans un nouvel onglet';
+        }
       } else {
-        // No Turbo embed, show thumbnail and link to Fileditch
+        // Pas d'embed direct : miniature + simple bouton lien
         turboContainerEl.style.display = 'none';
         thumbnailEl.style.display = 'block';
-        linkEl.style.display = 'block';
-        linkEl.textContent = '▶ Voir la vidéo sur Fileditch';
+
+        if (primaryUrl) {
+          linkEl.style.display = 'block';
+          linkEl.textContent = '▶ Ouvrir la vidéo (hébergeur principal)';
+        } else if (embedUrl) {
+          linkEl.style.display = 'block';
+          linkEl.textContent = '▶ Ouvrir la vidéo';
+        } else {
+          linkEl.style.display = 'none';
+        }
+      }
+
+      // Hébergeur secondaire (ex. Fileditch si union-crax en principal)
+      if (altLinkEl) {
+        if (secondaryUrl) {
+          altLinkEl.style.display = 'block';
+          altLinkEl.href = secondaryUrl;
+          if (secondaryUrl.toLowerCase().includes('fileditch')) {
+            altLinkEl.textContent = 'Voir sur Fileditch (hébergeur secondaire)';
+          } else {
+            altLinkEl.textContent = 'Voir sur un autre hébergeur';
+          }
+        } else {
+          altLinkEl.style.display = 'none';
+          altLinkEl.removeAttribute('href');
+        }
       }
       
       metaEl.innerHTML = `Artiste: <strong>${escapeHtml(video.artist)}</strong><br>Date: ${escapeHtml(video.date)}<br>Tags: ${video.tags.map(t=>`<span class='tag'>${escapeHtml(t)}</span>`).join(' ')}`;

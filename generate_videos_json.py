@@ -57,25 +57,53 @@ def build_entries():
             # Parse all URLs from the file (one per line)
             lines = [line.strip() for line in content.split('\n') if line.strip()]
 
-            # Separate Fileditch and Turbo URLs
-            fileditch_url = None
-            turbo_url = None
+            # URLs collectées par type
+            embed_url = None           # turbo (iframe embarqué)
+            union_crax_url = None      # pages de lecture union-crax
+            fileditch_url = None       # fichiers .mp4 Fileditch
 
             for line in lines:
                 if not line.startswith(('http://', 'https://')):
                     continue
 
-                if 'fileditch' in line.lower():
-                    if line.lower().endswith('.mp4'):
-                        fileditch_url = line
+                lower_line = line.lower()
+
+                # Providers autorisant l'embed direct dans un <iframe> sur notre site
+                if 'turbo' in lower_line:
+                    embed_url = line
+
+                # Hébergeur union-crax (on garde le premier trouvé)
+                if 'union-crax' in lower_line and union_crax_url is None:
+                    union_crax_url = line
+
+                # Hébergeur Fileditch (fichier .mp4, on garde le premier valide)
+                if 'fileditch' in lower_line:
+                    if lower_line.endswith('.mp4'):
+                        if fileditch_url is None:
+                            fileditch_url = line
                     else:
                         print(f"Avertissement: {fname} Fileditch URL n'est pas .mp4 ({line})", file=sys.stderr)
-                if 'turbo' in line.lower():
-                    turbo_url = line
 
-            # Skip if no valid links found
-            if not fileditch_url and not turbo_url:
-                print(f"Avertissement: {fname} ne contient pas de lien Fileditch ou Turbo valide (skipped)", file=sys.stderr)
+                # Signaler systématiquement les fichiers qui contiennent encore du filemoon
+                # mais NE JAMAIS les utiliser comme hébergeur dans le JSON
+                if 'filemoon.' in lower_line:
+                    print(f"Avertissement: {fname} contient un lien filemoon ({line})", file=sys.stderr)
+
+            # Calculer la priorité des hébergeurs:
+            # 1) union-crax en principal si présent
+            # 2) Fileditch en secondaire si union-crax existe, sinon en principal
+            primary_watch_url = None
+            secondary_watch_url = None
+            if union_crax_url:
+                primary_watch_url = union_crax_url
+                if fileditch_url and fileditch_url != union_crax_url:
+                    secondary_watch_url = fileditch_url
+            elif fileditch_url:
+                primary_watch_url = fileditch_url
+
+            # Skip si aucun hébergeur exploitable ni embed Turbo
+            if not primary_watch_url and not embed_url:
+                print(f"Avertissement: {fname} ne contient pas de lien Fileditch, Turbo ou URL de lecture valide (skipped)", file=sys.stderr)
                 skipped_count += 1
                 continue
 
@@ -133,13 +161,17 @@ def build_entries():
                 'date': detected_date
             }
 
-            # Add Fileditch link as 'iframe' (redirect to watch on fileditch)
-            if fileditch_url:
-                entry['iframe'] = fileditch_url
+            # Add main "watch" link as 'iframe' (hébergeur n°1, ouvert dans un nouvel onglet)
+            if primary_watch_url:
+                entry['iframe'] = primary_watch_url
 
-            # Add Turbo link as 'embed_url' (direct embed on page)
-            if turbo_url:
-                entry['embed_url'] = turbo_url
+            # Add secondary "watch" link as 'alt_iframe' (hébergeur n°2, ex. Fileditch si union-crax en n°1)
+            if secondary_watch_url:
+                entry['alt_iframe'] = secondary_watch_url
+
+            # Add embed link as 'embed_url' (direct embed on page)
+            if embed_url:
+                entry['embed_url'] = embed_url
 
             entries.append(entry)
             seen_ids.add(vid_id)
